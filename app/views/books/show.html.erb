@@ -1,6 +1,10 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <strong>ID:</strong>
+  <%= @book.id %>
+</p>
+<p>
   <strong>ISBN:</strong>
   <%= @book.isbn %>
 </p>
@@ -16,8 +20,25 @@
 
 <p>
   <strong>Owner:</strong>
-  <%= @book.owner %>
+  <%= @book.owner.name %>
 </p>
 
+<p>
+  <strong>Checkouts:</strong>
+  <table>
+    <tr>
+      <th>User</th>
+      <th>from</th>
+      <th>to</th>
+    </tr>
+    <% @book.checkouts.each do |checkout| %>
+    <tr>
+      <td><%= checkout.user.name %></td>
+      <td><%= checkout.from %></td>
+      <td><%= checkout.to %></td>
+    </tr>
+    <% end %>
+  </table>
+</p>
 <%= link_to 'Edit', edit_book_path(@book) %> |
 <%= link_to 'Back', books_path %>
