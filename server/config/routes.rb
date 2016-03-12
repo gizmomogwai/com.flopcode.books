@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   resources :books
-  resources :users
+  resources :users do
+    resources :api_keys
+  end
+
   resources :checkouts
   resources :books
 

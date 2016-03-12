@@ -8,10 +8,13 @@
 </head>
 <body>
   <div id="navigation">
+    <% if @user %>
+    <% puts "user '#{@user}'" %>
+      <%= link_to 'profile', user_path(@user.id) %>
+    <% end %>
     <%= link_to 'books', books_path %>
     <%= link_to 'users', users_path %>
     <%= link_to 'checkout', checkouts_path %>
-    <%= link_to 'profile TODO', books_path %>
     <%= link_to 'logout', logout_path %>
   </div>
 <%= yield %>
