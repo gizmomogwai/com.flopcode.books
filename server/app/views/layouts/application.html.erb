@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Books</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-  <div id="navigation">
-    <% if @user %>
-    <% puts "user '#{@user}'" %>
+  <head>
+    <title>Books</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div id="navigation">
+      <% if @user %>
+      <% puts "user '#{@user}'" %>
       <%= link_to 'profile', user_path(@user.id) %>
+      <% end %>
+      <%= link_to 'books', books_path %>
+      <%= link_to 'users', users_path %>
+      <%= link_to 'checkout', checkouts_path %>
+      <%= link_to 'logout', logout_path %>
+    </div>
+    <hr />
+    <% flash.each do |key, value| %>
+    <%= content_tag(:div, value, :class => "flash #{key}") %>
     <% end %>
-    <%= link_to 'books', books_path %>
-    <%= link_to 'users', users_path %>
-    <%= link_to 'checkout', checkouts_path %>
-    <%= link_to 'logout', logout_path %>
-  </div>
-<%= yield %>
 
-<a href="https://github.com/gizmomogwai/com.flopcode.books/commit/<%= APP_VERSION %>">com.flopcode.books</a> (<%= APP_VERSION%>)
-</body>
+    <%= yield %>
+    <hr />
+    <a href="https://github.com/gizmomogwai/com.flopcode.books/commit/<%= APP_VERSION %>">com.flopcode.books</a> (<%= APP_VERSION%>)
+  </body>
 </html>

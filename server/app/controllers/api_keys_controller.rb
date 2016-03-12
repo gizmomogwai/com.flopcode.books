@@ -19,7 +19,10 @@ class ApiKeysController < ApplicationController
   end
 
   def show
+    require 'rqrcode'
+    @qr = RQRCode::QRCode.new("books-api-key://books/#{@api_key.key}", :size => 8, :level => :h )
   end
+
   private
   def set_api_key
     @api_key = ApiKey.find(params[:id])
