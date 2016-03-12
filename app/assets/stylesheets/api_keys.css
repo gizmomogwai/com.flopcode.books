@@ -1,0 +1,17 @@
+div.api-key table {
+    border-width: 0;
+    border-style: none;
+    border-color: #0000ff;
+    border-collapse: collapse;
+}
+
+div.api-key td {
+    border-left: solid 10px #000;
+    padding: 0;
+    margin: 0;
+    width: 0px;
+    height: 10px;
+}
+
+div.api-key td.black { border-color: #000; }
+div.api-key td.white { border-color: #fff; }
