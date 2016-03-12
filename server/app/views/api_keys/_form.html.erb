@@ -1,0 +1,11 @@
+<% puts "api_key #{@api_key}" %>
+<% puts "api_key.user #{@api_key.user}" %>
+<%= form_for([@api_key.user, @api_key]) do |f| %>
+  <div class="field">
+    <%= f.label :for_app %><br />
+    <%= f.text_field :for_app %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

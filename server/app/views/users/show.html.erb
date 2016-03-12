@@ -10,5 +10,25 @@
   <%= @user.account %>
 </p>
 
+<p>
+  <strong>ApiKeys:</strong>
+  <table>
+    <tr>
+      <th>Application</th>
+      <th>key</th>
+      <th>operations</th>
+    </tr>
+    <% @user.api_keys.each do |api_key| %>
+    <tr>
+      <td><%= api_key.for_app %></td>
+      <td><%= api_key.key %></td>
+      <td><%= link_to 'show', user_api_key_path(api_key.user, api_key) %>|<%= link_to 'delete', user_api_key_path(api_key.user, api_key), data: { confirm: "Are you sure"}, method: :delete %>
+    </tr>
+    <% end %>
+  </table>
+  <%= link_to 'Add Key', new_user_api_key_path(@user) %>
+</p>
+
+
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

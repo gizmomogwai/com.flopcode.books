@@ -3,17 +3,17 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_filter :set_current_user
+  before_filter :set_user
 
   # authentication
   def admin_user
-    user = current_user
+    user = user_from_session
     redirect_to root_path, alert: 'Access Denied' unless user.admin
     return true
   end
 
   def authenticate_user
-    if current_user
+    if user_from_session
       return true
     end
     flash[:warning] = 'Please login to continue'
@@ -22,13 +22,12 @@ class ApplicationController < ActionController::Base
     return false
   end
 
-  def set_current_user
-    @user = current_user
+  def set_user
+    @user = user_from_session
   end
 
-  def current_user
+  def user_from_session
     begin
-      puts "current_user session: #{session} user: #{session[:user]}"
       User.find(session[:user]['user']['id'])
     rescue
       nil
