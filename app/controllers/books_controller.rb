@@ -1,6 +1,8 @@
 class BooksController < ApplicationController
-  protect_from_forgery with: :null_session, :if => Proc.new { |c| c.request.format == 'application/json' }
+  # protect_from_forgery with: :null_session, :if => Proc.new { |c| c.request.format == 'application/json' }
   before_action :set_book, only: [:show, :edit, :update, :destroy]
+  before_filter :authenticate_user
+  before_filter :admin_user, only: [:edit, :destroy, :update, :new, :create]
 
   # GET /books
   # GET /books.json
@@ -72,4 +74,5 @@ class BooksController < ApplicationController
   def book_params
     params.require(:book).permit(:isbn, :title, :authors, :owner_id)
   end
+
 end
