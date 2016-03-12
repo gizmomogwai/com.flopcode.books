@@ -7,7 +7,13 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+  <div id="navigation">
+    <%= link_to 'books', books_path %>
+    <%= link_to 'users', users_path %>
+    <%= link_to 'checkout', checkouts_path %>
+    <%= link_to 'profile TODO', books_path %>
+    <%= link_to 'logout', logout_path %>
+  </div>
 <%= yield %>
 
 </body>
