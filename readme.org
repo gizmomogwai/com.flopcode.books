@@ -1,4 +1,9 @@
 * Books Rails Server
 
+** authentication
+- normal interaction with the web ui is done with ldap.
+- api interaction with e.g. the android is done via api_keys that can
+  be generated in the profile section of a user.
+
 ** Todos
 *** support ldap

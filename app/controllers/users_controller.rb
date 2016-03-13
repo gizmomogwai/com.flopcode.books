@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:index, :show, :edit, :update, :destroy]
+  before_filter :admin_user, except: [:show]
 
   # GET /users
   # GET /users.json
@@ -10,6 +11,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    check_user unless @user&.admin
   end
 
   # GET /users/new
@@ -62,6 +64,13 @@ class UsersController < ApplicationController
   end
 
   private
+  def check_user
+    user = User.find(params[:id])
+    if user.id != @user.id
+      flash[:warning] = "Access to other users not allowed"
+      redirect_to root_path
+    end
+  end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
