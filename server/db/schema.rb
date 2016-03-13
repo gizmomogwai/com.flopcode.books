@@ -27,12 +27,12 @@ ActiveRecord::Schema.define(version: 20160312114240) do
     t.string   "isbn"
     t.string   "title"
     t.string   "authors"
-    t.integer  "owner_id"
+    t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "books", ["owner_id"], name: "index_books_on_owner_id"
+  add_index "books", ["user_id"], name: "index_books_on_user_id"
 
   create_table "checkouts", force: :cascade do |t|
     t.datetime "from"

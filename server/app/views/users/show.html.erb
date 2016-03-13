@@ -11,6 +11,24 @@
 </p>
 
 <p>
+  <strong>Checkouts:</strong>
+  <table>
+    <tr>
+      <th>book</th>
+      <th>from</th>
+      <th>to</th>
+    </tr>
+    <% @user.checkouts.each do |checkout| %>
+    <tr>
+      <td><%= link_to checkout.book.title, checkout.book %></td>
+      <td><%= checkout.from %>
+      <td><%= checkout.to %>
+    </tr>
+    <% end %>
+  </table>
+</p>
+
+<p>
   <strong>ApiKeys:</strong>
   <table>
     <tr>

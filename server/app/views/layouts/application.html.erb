@@ -9,13 +9,15 @@
   <body>
     <div id="navigation">
       <% if @user %>
-      <% puts "user '#{@user}'" %>
       <%= link_to 'profile', user_path(@user.id) %>
-      <% end %>
       <%= link_to 'books', books_path %>
+      <% if @user&.admin %>
       <%= link_to 'users', users_path %>
-      <%= link_to 'checkout', checkouts_path %>
+      <% end %>
       <%= link_to 'logout', logout_path %>
+      <% else %>
+      <%= link_to 'login', login_path %>
+      <% end %>
     </div>
     <hr />
     <% flash.each do |key, value| %>

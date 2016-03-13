@@ -7,7 +7,7 @@ class UserSession
   end
 
   def self.authenticate(params)
-    puts params
+    puts "xxxxxxxxx #{params}"
     account = params[:account]
     password = params[:password]
     user = User.find_by_account(account)
