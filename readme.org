@@ -4,6 +4,6 @@
 - normal interaction with the web ui is done with ldap.
 - api interaction with e.g. the android is done via api_keys that can
   be generated in the profile section of a user.
-
+- curl -H "Authorization: Token token=b6c133a5c32e42a2848c82f31e7b31a9" http://localhost:3000/api/v1/books/1
 ** Todos
 *** support ldap
