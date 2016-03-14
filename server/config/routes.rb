@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :books
       resources :users
+      resources :checkouts
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.
