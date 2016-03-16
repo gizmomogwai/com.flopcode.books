@@ -9,7 +9,9 @@
   <body>
     <div id="navigation">
       <% if @user %>
+      <% if @user.id %>
       <%= link_to 'profile', user_path(@user.id) %>
+      <% end %>
       <%= link_to 'books', books_path %>
       <% if @user&.admin %>
       <%= link_to 'users', users_path %>

@@ -12,14 +12,16 @@ Rails.application.routes.draw do
   get 'login' => 'user_sessions#new'
   get 'logout' => 'user_sessions#destroy'
   resources :user_sessions
-  
+
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
       resources :books
       resources :users
       resources :checkouts
+      resources :active_checkouts
     end
   end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
