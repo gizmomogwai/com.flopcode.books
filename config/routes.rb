@@ -6,12 +6,13 @@ Rails.application.routes.draw do
 
   resources :checkouts
   resources :books
+  resources :active_checkouts
 
   root 'books#index'
   get 'login' => 'user_sessions#new'
   get 'logout' => 'user_sessions#destroy'
   resources :user_sessions
-
+  
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
       resources :books

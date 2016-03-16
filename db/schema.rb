@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160312114240) do
+ActiveRecord::Schema.define(version: 20160315162321) do
+
+  create_table "active_checkouts", force: :cascade do |t|
+    t.integer  "book_id"
+    t.integer  "checkout_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "active_checkouts", ["book_id"], name: "index_active_checkouts_on_book_id"
+  add_index "active_checkouts", ["checkout_id"], name: "index_active_checkouts_on_checkout_id"
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "key"
