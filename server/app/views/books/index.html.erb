@@ -22,6 +22,11 @@
         <td><%= book.title %></td>
         <td><%= book.authors %></td>
         <td><%= book.user&.name %></td>
+        <% if book.active_checkout %>
+        <td><%= button_to 'checkin', book.active_checkout, method: :delete %></td>
+        <% else %>
+        <td><%= button_to 'checkout', {controller: :active_checkouts, action: :create, method: :post}, {params: {'active_checkout[book]' => book}} %></td>
+        <% end %>
         <td><%= link_to 'Show', book %></td>
         <td><%= link_to 'Edit', edit_book_path(book) %></td>
         <td><%= link_to 'Destroy', book, method: :delete, data: { confirm: 'Are you sure?' } %></td>
