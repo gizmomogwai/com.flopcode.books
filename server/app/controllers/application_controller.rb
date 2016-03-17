@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   # authentication
   def admin_user
     user = user_from_session
-    redirect_to root_path, alert: 'Access Denied' unless user.admin
+    redirect_to login_path, alert: 'Access Denied' unless user.admin
     return true
   end
 
