@@ -1,11 +1,12 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  key: MyString
-  for_app: MyString
-  references: 
-
+  key: key1
+  for_app: app1
+  user_id: 1
+  
 two:
-  key: MyString
-  for_app: MyString
-  references: 
+  key: key2
+  for_app: app2
+  user_id: 2
+  

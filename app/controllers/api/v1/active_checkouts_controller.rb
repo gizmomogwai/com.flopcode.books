@@ -12,4 +12,3 @@ class Api::V1::ActiveCheckoutsController < Api::ApiController
     head ac.release(@user)
   end
 end
-end
