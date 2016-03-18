@@ -1,3 +1,3 @@
 language: ruby
-script: rake
+script: bundle exec rake test test/controllers/books_controller_test.rb
 sudo: false
