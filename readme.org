@@ -9,6 +9,6 @@ curl -H "Authorization: Token token=b6c133a5c32e42a2848c82f31e7b31a9" http://loc
 - checkout book 1
 curl -H "Authorization: Token token=b6c133a5c32e42a2848c82f31e7b31a9" -d "active_checkout[book=1]" http://localhost:3000/api/v1/active_checkouts
 curl -H "Authorization: Token token=123" -d "active_checkout[book=1]" http://localhost:3000/api/v1/active_checkouts
-c
+
 ** Todos
 *** support ldap

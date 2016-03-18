@@ -57,42 +57,49 @@ class BooksControllerTest < ActionController::TestCase
     end
   end
 
-  #  test "should show book" do
-  #    get :show, id: @book
-  #    assert_response :success
-  #  end
-  #
-  #  test "should not get edit for normal user" do
-  #    get :edit, id: @book
-  #    assert_redirected_to login_path
-  #  end
-  #  test "should get edit for admin user" do
-  #    login_as(:admin)
-  #    get :edit, id: @book
-  #    assert_response :success
-  #  end
-  #
-  #  test "should update book for admins" do
-  #    login_as(:admin)
-  #    patch :update, id: @book, book: { authors: @book.authors, title: @book.title, user_id: @book.user_id }
-  #    assert_redirected_to book_path(assigns(:book))
-  #  end
-  #
-  #  test "should not update book for non admins" do
-  #    patch :update, id: @book, book: { authors: @book.authors, title: @book.title, user_id: @book.user_id }
-  #    assert_redirected_to login_path
-  #  end
-  #
-  #  test "should destroy book for admin users" do
-  #    login_as(:admin)
-  #    assert_difference('Book.count', -1) do
-  #      delete :destroy, id: @book.id
-  #    end
-  #    assert_redirected_to books_path
-  #  end
-  #
-  #  test "should not destroy book for non admin users" do
-  #    delete :destroy, id: @book.id
-  #    assert_redirected_to login_path
-  #  end
+  {nil => ->(x) {x.assert_redirected_to x.login_path},
+   admin: ->(x) {x.assert_response :success},
+   normal: ->(x) {x.assert_response :success}}.each do |user, block|
+    test "show book for '#{user}' users" do
+      login_as(user)
+      get :show, id: @book
+      block.call(self)
+    end
+  end
+
+  {nil => ->(x) {x.assert_redirected_to x.login_path},
+   admin: ->(x) {x.assert_response :success},
+   normal: ->(x) {x.assert_redirected_to x.login_path}}.each do |user, block|
+    test "edit book for '#{user}' users" do
+      login_as(user)
+      get :edit, id: @book
+      block.call(self)
+    end
+  end
+
+  {nil => ->(x) {x.assert_redirected_to x.login_path},
+   admin: ->(x) {x.assert_redirected_to x.book_path(x.assigns(:book))},
+   normal: ->(x) {x.assert_redirected_to x.login_path}}.each do |user, block|
+    test "update book for '#{user}' users" do
+      login_as(user)
+      patch :update, id: @book, book: { authors: @book.authors, title: @book.title, user_id: @book.user_id }
+      block.call(self)
+    end
+  end
+
+  {nil => ->(x, &block) {block.call; x.assert_redirected_to x.login_path},
+   admin: ->(x, &block) {
+     x.assert_difference('Book.count', -1) do
+       block.call
+     end
+     x.assert_redirected_to x.books_path
+   },
+   normal: ->(x, &block) {block.call; x.assert_redirected_to x.login_path}}.each do |user, block|
+    test "destroy book for '#{user}' users" do
+      login_as(user)
+      block.call(self) do
+        delete :destroy, id: @book.id
+      end
+    end
+  end
 end
