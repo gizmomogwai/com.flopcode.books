@@ -1,16 +1,14 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: name1
-  account: account1
-  
+normal:
+  name: normal
+  account: account
 
-two:
-  name: name2
+normal2:
+  name: normal2
   account: account2
 
 admin:
-  name: admin1
-  account: admin1
+  name: admin
+  account: admin
   admin: true
-  
