@@ -5,12 +5,6 @@ class BooksControllerTest < ActionController::TestCase
     @book = books(:one)
   end
 
-  def login_as(user)
-    if user
-      session[:user] = {'user' => {'id' => users(user).id}}
-    end
-  end
-
   {nil => ->(x){
      x.assert_redirected_to x.login_path},
    admin: ->(x) {
