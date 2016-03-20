@@ -65,10 +65,20 @@ class UsersController < ApplicationController
 
   private
   def check_user
+    if !@user
+      redirect_to login_path
+      return
+    end
+
     user = User.find(params[:id])
+    if !user
+      redirect_to login_path
+      return
+    end
+
     if user.id != @user.id
       flash[:warning] = "Access to other users not allowed"
-      redirect_to root_path
+      redirect_to login_path
     end
   end
 
