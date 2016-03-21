@@ -1,17 +1,16 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:index, :show, :edit, :update, :destroy]
+  #before_action :set_user, only: [:index, :show, :edit, :destroy]
   before_filter :admin_user, except: [:show]
 
   # GET /users
-  # GET /users.json
   def index
     @users = User.all
   end
 
   # GET /users/1
-  # GET /users/1.json
   def show
-    check_user unless @user&.admin
+    @user = User.find(params[:id])
+    check_user unless @logged_in_user&.admin
   end
 
   # GET /users/new
@@ -21,10 +20,11 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    @user = User.find(params[:id])
+    check_user unless @logged_in_user&.admin
   end
 
   # POST /users
-  # POST /users.json
   def create
     @user = User.new(user_params)
 
@@ -40,8 +40,9 @@ class UsersController < ApplicationController
   end
 
   # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
   def update
+    @user = User.find(params[:id])
+    check_user unless @logged_in_user&.admin
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
@@ -54,8 +55,8 @@ class UsersController < ApplicationController
   end
 
   # DELETE /users/1
-  # DELETE /users/1.json
   def destroy
+    @user = User.find(params[:id])
     @user.destroy
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
@@ -65,18 +66,17 @@ class UsersController < ApplicationController
 
   private
   def check_user
+    if !@logged_in_user
+      redirect_to login_path
+      return
+    end
+
     if !@user
       redirect_to login_path
       return
     end
 
-    user = User.find(params[:id])
-    if !user
-      redirect_to login_path
-      return
-    end
-
-    if user.id != @user.id
+    if @user.id != @logged_in_user.id
       flash[:warning] = "Access to other users not allowed"
       redirect_to login_path
     end

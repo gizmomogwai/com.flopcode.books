@@ -62,22 +62,55 @@ class UsersControllerTest < ActionController::TestCase
       block.call(self)
     end
   end
-  #
-  #  test "should get edit" do
-  #    get :edit, id: @user
-  #    assert_response :success
-  #  end
-  #
-  #  test "should update user" do
-  #    patch :update, id: @user, user: { account: @user.account, name: @user.name }
-  #    assert_redirected_to user_path(assigns(:user))
-  #  end
-  #
-  #  test "should destroy user" do
-  #    assert_difference('User.count', -1) do
-  #      delete :destroy, id: @user
-  #    end
-  #
-  #    assert_redirected_to users_path
-  #  end
+
+  {nil => ->(x){
+     x.assert_redirected_to x.login_path},
+   admin: ->(x) {
+     x.assert_response :success
+     h = x.assigns(:user)
+     x.assert_not_nil x.assigns(:user)},
+   normal: ->(x) {
+     x.assert_redirected_to x.login_path}}.each do |user, block|
+    test "edit users for '#{user}' users" do
+      login_as(user)
+      get :edit, id: users(:normal).id
+      block.call(self)
+    end
+  end
+
+  {nil => ->(x, admin, user){
+     x.assert_redirected_to x.login_path},
+   admin: ->(x, admin, user) {
+     x.assert_redirected_to x.user_path(user)
+     x.assert_equal(User.find(user).account, "new account")
+   },
+   normal: ->(x, admin, user) {
+     x.assert_redirected_to x.login_path}
+  }.each do |user, block|
+    test "update user for '#{user}' users" do
+      login_as(user)
+      u = users(:normal)
+      patch :update, id: u.id, user: { account: "new account", name: "new name" }
+      block.call(self, users(:admin).id, u.id)
+    end
+  end
+
+  {nil => ->(x, &block){
+     block.call
+     x.assert_redirected_to x.login_path},
+   admin: ->(x, &block) {
+     x.assert_difference('User.count', -1) do
+       block.call
+     end
+     x.assert_redirected_to x.users_path
+   },
+   normal: ->(x, &block) {
+     block.call
+     x.assert_redirected_to x.login_path}
+  }.each do |user, block|
+    test "destroy user for '#{user}' users" do
+      login_as(user)
+      block.call(self) { delete :destroy, id: users(:normal2).id }
+    end
+  end
 end

@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_filter :set_user
+  before_filter :set_logged_in_user
 
   # authentication
   def admin_user
@@ -22,8 +22,8 @@ class ApplicationController < ActionController::Base
     return false
   end
 
-  def set_user
-    @user = user_from_session
+  def set_logged_in_user
+    @logged_in_user = user_from_session
   end
 
   def user_from_session
