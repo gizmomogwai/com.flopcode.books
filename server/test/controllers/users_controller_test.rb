@@ -113,4 +113,11 @@ class UsersControllerTest < ActionController::TestCase
       block.call(self) { delete :destroy, id: users(:normal2).id }
     end
   end
+
+  test "show should only answer html requests" do
+    assert_raises_with_message(ActionController::UnknownFormat, 'ActionController::UnknownFormat') do
+      login_as(:admin)
+      get :show, {format: :json, id: users(:normal).id}
+    end
+  end
 end
