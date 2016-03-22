@@ -22,4 +22,11 @@ class ActiveSupport::TestCase
     end
   end
 
+
+  def assert_raises_with_message(exception, msg, &block)
+    block.call
+  rescue exception => e
+    assert_match msg, e.message
+  end
+
 end

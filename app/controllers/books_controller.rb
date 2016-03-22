@@ -5,10 +5,12 @@ class BooksController < ApplicationController
   before_action :set_book_from_parameters, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_user
   before_filter :admin_user, only: [:edit, :destroy, :update, :new, :create]
+  respond_to :html
 
   # GET /books
   def index
     @books = Book.all
+    respond_with @books
   end
 
   # GET /books/1

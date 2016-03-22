@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   #before_action :set_user, only: [:index, :show, :edit, :destroy]
   before_filter :admin_user, except: [:show]
+  respond_to :html
+
 
   # GET /users
   def index
@@ -10,7 +12,9 @@ class UsersController < ApplicationController
   # GET /users/1
   def show
     @user = User.find(params[:id])
-    check_user unless @logged_in_user&.admin
+    check_user {
+      respond_with @user
+    }
   end
 
   # GET /users/new
@@ -76,9 +80,15 @@ class UsersController < ApplicationController
       return
     end
 
-    if @user.id != @logged_in_user.id
-      flash[:warning] = "Access to other users not allowed"
-      redirect_to login_path
+    if @logged_in_user.admin
+      yield
+    else
+      if @user.id != @logged_in_user.id
+        flash[:warning] = "Access to other users not allowed"
+        redirect_to login_path
+      else
+        yield
+      end
     end
   end
 
