@@ -22,16 +22,34 @@ class ApplicationController < ActionController::Base
     return false
   end
 
-  def set_logged_in_user
-    @logged_in_user = user_from_session
-  end
+  def check_user
+    if !@logged_in_user
+      redirect_to login_path
+      return
+    end
 
-  def user_from_session
-    begin
-      User.find(session[:user]['user']['id'])
-    rescue
-      nil
+    if @logged_in_user.admin
+      yield
+    else
+      if @user.id != @logged_in_user.id
+        flash[:warning] = "Access to other users not allowed"
+        redirect_to login_path
+      else
+        yield
+      end
     end
   end
+
+  def set_logged_in_user
+  @logged_in_user = user_from_session
+end
+
+def user_from_session
+  begin
+    User.find(session[:user]['user']['id'])
+  rescue
+    nil
+  end
+end
 
 end
