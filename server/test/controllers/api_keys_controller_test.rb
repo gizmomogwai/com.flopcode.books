@@ -39,13 +39,31 @@ class ApiKeysControllerTest < ActionController::TestCase
   }.each do |user, block|
     test "show api key for other user as '#{user}' users" do
       normal_user = users(:normal)
-      normal_user.create_api_key("test")
-      key = normal_user.api_keys.first
+      key = normal_user.create_api_key("test")
 
       login_as(user)
 
       get :show, id: key.id, user_id: users(:normal).id
       block.call(self)
+    end
+  end
+
+  {
+    normal: -> (x, u) {
+      x.assert_redirected_to x.user_path(u)
+    },
+    normal2: -> (x, u) {
+      x.assert_redirected_to x.login_path
+    },
+    admin: -> (x, u) {
+      x.assert_redirected_to x.user_path(u)
+    }
+  }.each do |user, block|
+    test "destroy api key as '#{user}' users" do
+      user = login_as(user)
+      key = users(:normal).create_api_key('test')
+      delete :destroy, id: key.id, user_id: user.id
+      block.call(self, user)
     end
   end
 end

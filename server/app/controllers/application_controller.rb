@@ -22,16 +22,19 @@ class ApplicationController < ActionController::Base
     return false
   end
 
-  def check_user
-    if !@logged_in_user
+  def check_user(logged_in_user=nil, user=nil)
+    logged_in_user ||= @logged_in_user
+    user ||= @user
+
+    if !logged_in_user
       redirect_to login_path
       return
     end
 
-    if @logged_in_user.admin
+    if logged_in_user.admin
       yield
     else
-      if @user.id != @logged_in_user.id
+      if user.id != logged_in_user.id
         flash[:warning] = "Access to other users not allowed"
         redirect_to login_path
       else

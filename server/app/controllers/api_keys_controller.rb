@@ -1,5 +1,5 @@
 class ApiKeysController < ApplicationController
-  before_filter :set_user, only: [:new, :create, :show]
+  before_filter :set_user, only: [:new, :create, :show, :destroy]
   before_filter :set_api_key, only: [:destroy, :show]
 
   def new
@@ -18,8 +18,10 @@ class ApiKeysController < ApplicationController
   end
 
   def destroy
-    @api_key.destroy
-    redirect_to user_path(@user)
+    check_user(@logged_in_user, @api_key.user) {
+      @api_key.destroy
+      redirect_to user_path(@user)
+    }
   end
 
   def show
