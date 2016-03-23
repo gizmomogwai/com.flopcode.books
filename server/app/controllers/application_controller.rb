@@ -41,15 +41,15 @@ class ApplicationController < ActionController::Base
   end
 
   def set_logged_in_user
-  @logged_in_user = user_from_session
-end
-
-def user_from_session
-  begin
-    User.find(session[:user]['user']['id'])
-  rescue
-    nil
+    @logged_in_user = user_from_session
   end
-end
+
+  def user_from_session
+    begin
+      User.find(session[:user]['user']['id'])
+    rescue
+      nil
+    end
+  end
 
 end

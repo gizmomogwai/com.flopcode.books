@@ -1,5 +1,5 @@
 class ApiKeysController < ApplicationController
-  before_filter :set_user, only: [:new]
+  before_filter :set_user, only: [:new, :create]
   before_filter :set_api_key, only: [:destroy, :show]
 
   def new
