@@ -19,6 +19,7 @@ class ActiveSupport::TestCase
   def login_as(user)
     if user
       session[:user] = {'user' => {'id' => users(user).id}}
+      @u = users(user)
     end
   end
 
