@@ -1,5 +1,5 @@
 class ApiKeysController < ApplicationController
-  before_filter :set_user, only: [:new, :create]
+  before_filter :set_user, only: [:new, :create, :show]
   before_filter :set_api_key, only: [:destroy, :show]
 
   def new
@@ -23,8 +23,10 @@ class ApiKeysController < ApplicationController
   end
 
   def show
-    require 'rqrcode'
-    @qr = RQRCode::QRCode.new("books-api-key://books/#{@api_key.key}", :size => 8, :level => :h )
+    check_user {
+      require 'rqrcode'
+      @qr = RQRCode::QRCode.new("books-api-key://books/#{@api_key.key}", :size => 8, :level => :h )
+    }
   end
 
   private
