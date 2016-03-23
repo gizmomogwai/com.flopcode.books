@@ -1,4 +1,4 @@
-* Books Rails Server [[https://travis-ci.org/gizmomogwai/com.flopcode.books.svg?branch=master]] [[https://codecov.io/github/gizmomogwai/zen4d][https://codecov.io/github/gizmomogwai/com.flopcode.books/coverage.svg?branch=master]]
+* Books Rails Server [[https://travis-ci.org/gizmomogwai/com.flopcode.books.svg?branch=master]] [[https://codecov.io/github/gizmomogwai/com.flopcode.books][https://codecov.io/github/gizmomogwai/com.flopcode.books/coverage.svg?branch=master]]
 
 ** authentication
 - normal interaction with the web ui is done with ldap.
