@@ -32,29 +32,23 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    if @user.save
-      redirect_to @user, notive: 'User was successfully created.'
-    else
-      render :new
-    end
+    @user.save!
+    redirect_to @user, notive: 'User was successfully created.'
   end
 
   # PATCH/PUT /users/1
   def update
     @user = User.find(params[:id])
     check_user {
-      if @user.update(user_params)
-        redirect_to @user, notice: 'User was successfully updated.'
-      else
-        render :edit
-      end
+      @user.update!(user_params)
+      redirect_to @user, notice: 'User was successfully updated.'
     }
   end
 
   # DELETE /users/1
   def destroy
     @user.destroy
-    redirect_to users_url, notice: 'User was successfully destroyed.' 
+    redirect_to users_url, notice: 'User was successfully destroyed.'
   end
 
   private
