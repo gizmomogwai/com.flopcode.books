@@ -29,20 +29,14 @@ class BooksController < ApplicationController
   # POST /books
   def create
     @book = Book.new(book_params)
-    if @book.save
-      redirect_to @book, notice: 'Book was successfully created.'
-    else
-      render :new
-    end
+    @book.save!
+    redirect_to @book, notice: 'Book was successfully created.'
   end
 
   # PATCH/PUT /books/1
   def update
-    if @book.update(book_params)
-      redirect_to @book, notice: 'Book was successfully updated.'
-    else
-      render :edit
-    end
+    @book.update!(book_params)
+    redirect_to @book, notice: 'Book was successfully updated.'
   end
 
   # DELETE /books/1
