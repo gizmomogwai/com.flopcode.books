@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class CheckoutsControllerTest < ActionController::TestCase
+
   setup do
     @checkout = checkouts(:one)
   end
