@@ -1,6 +1,7 @@
 class ActiveCheckout < ActiveRecord::Base
   belongs_to :book
   belongs_to :checkout
+
   def self.for(user, book)
     raise 'book already taken' if book.active_checkout
 
@@ -17,9 +18,14 @@ class ActiveCheckout < ActiveRecord::Base
     ac.save
     ac
   end
+  class WrongUser < StandardError; end
 
   def release(user)
-    raise 'wrong user' unless user == checkout&.user
+    puts user.name
+    if !user.admin
+      puts "raise wrong user"
+      raise WrongUser.new
+    end
 
     checkout.to = DateTime.new
     checkout.save
