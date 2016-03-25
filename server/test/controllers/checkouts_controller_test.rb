@@ -6,45 +6,42 @@ class CheckoutsControllerTest < ActionController::TestCase
     @checkout = checkouts(:one)
   end
 
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:checkouts)
-  end
-
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
-
-  test "should create checkout" do
-    assert_difference('Checkout.count') do
-      post :create, checkout: { book_id: @checkout.book_id, from: @checkout.from, to: @checkout.to, user_id: @checkout.user_id }
+  {
+    nil => -> (x) {
+      x.assert_redirected_to x.login_path
+    },
+    normal: -> (x) {
+      x.assert_response :success
+      x.assert_not_nil x.assigns(:checkouts)
+    }
+  }.each do |user, block|
+    test "checkouts index for '#{user}' users" do
+      login_as(user)
+      get :index
+      block.call(self)
     end
-
-    assert_redirected_to checkout_path(assigns(:checkout))
   end
 
-  test "should show checkout" do
-    get :show, id: @checkout
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, id: @checkout
-    assert_response :success
-  end
-
-  test "should update checkout" do
-    patch :update, id: @checkout, checkout: { book_id: @checkout.book_id, from: @checkout.from, to: @checkout.to, user_id: @checkout.user_id }
-    assert_redirected_to checkout_path(assigns(:checkout))
-  end
-
-  test "should destroy checkout" do
-    assert_difference('Checkout.count', -1) do
-      delete :destroy, id: @checkout
+  {
+    nil => -> (x) {
+      x.assert_redirected_to x.login_path
+    },
+    normal: -> (x) {
+      x.assert_response :success
+      x.assert_not_nil x.assigns(:checkout)
+    }
+  }.each do |user, block|
+    test "show checkout for '#{user}' users" do
+      login_as(user)
+      get :show, id: @checkout
+      block.call(self)
     end
+  end
 
-    assert_redirected_to checkouts_path
+  test "should only answer html" do
+    assert_raises_with_message(ActionController::UnknownFormat, 'ActionController::UnknownFormat') do
+      login_as(:normal)
+      get :index, format: :json
+    end
   end
 end
