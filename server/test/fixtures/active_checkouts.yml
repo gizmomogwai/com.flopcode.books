@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  book_id: 
-  checkout_id: 
+  book: one
+  checkout: one_open
 
 two:
-  book_id: 
-  checkout_id: 
+  book: two
+  checkout: two_open

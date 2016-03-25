@@ -5,7 +5,17 @@ one:
   user_id: 1
   book_id: 1
 
+one_open:
+  from: 2016-03-08 20:37:40
+  user_id: 1
+  book_id: 1
+
 two:
+  from: 2016-03-08 20:37:40
+  user_id: 1
+  book_id: 2
+
+two_open:
   from: 2016-03-08 20:37:40
   user_id: 1
   book_id: 2
