@@ -96,4 +96,11 @@ class BooksControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test "should only respond to html" do
+    assert_raises_with_message(ActionController::UnknownFormat, 'ActionController::UnknownFormat') do
+      login_as(:normal)
+      get :index, format: :json
+    end
+  end
 end
