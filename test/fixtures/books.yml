@@ -3,9 +3,15 @@
 one:
   title: book1
   authors: authors1
-  user_id: 1
-
+  user: one
+  
 two:
   title: book2
   authors: authors2
-  user_id: 2
+  user: two
+
+available:
+  title: available_title
+  authors: available_authors
+  user: one
+  
