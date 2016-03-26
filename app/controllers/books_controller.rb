@@ -28,7 +28,9 @@ class BooksController < ApplicationController
 
   # POST /books
   def create
+    puts book_params
     @book = Book.new(book_params)
+    byebug
     @book.save!
     redirect_to @book, notice: 'Book was successfully created.'
   end

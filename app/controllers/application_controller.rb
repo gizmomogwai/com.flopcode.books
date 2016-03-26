@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
     logged_in_user ||= @logged_in_user
     user ||= @user
 
-    if !logged_in_user
+    unless logged_in_user
       redirect_to login_path
       return
     end
