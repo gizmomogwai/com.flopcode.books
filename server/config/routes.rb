@@ -5,8 +5,9 @@ Rails.application.routes.draw do
     resources :api_keys
   end
   resources :checkouts
-  resources :books
   resources :active_checkouts
+  resources :locations
+
   root 'books#index'
   get 'login' => 'user_sessions#new'
   get 'logout' => 'user_sessions#destroy'

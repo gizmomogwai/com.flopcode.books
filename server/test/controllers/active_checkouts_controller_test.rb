@@ -11,10 +11,29 @@ class ActiveCheckoutsControllerTest < ActionController::TestCase
   }.each do |user, block|
     test "create active checkout for untaken book for '#{user}' users" do
       login_as(user)
+      post :create, active_checkout: {book: books(:available).id}
+      block.call(self)
+    end
+  end
+
+  {
+    nil => -> (x) {
+      x.assert_redirected_to x.login_path
+    },
+    normal: -> (x) {
+      x.assert_response :locked
+    },
+    admin: -> (x) {
+      x.assert_response :locked
+    }
+  }.each do |user, block|
+    test "create active checkout for taken book for '#{user}' users" do
+      login_as(user)
       post :create, active_checkout: {book: books(:one).id}
       block.call(self)
     end
   end
+
 
   {
     nil => -> (x) {

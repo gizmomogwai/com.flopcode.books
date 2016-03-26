@@ -8,13 +8,14 @@
   </head>
   <body>
     <div id="navigation">
-      <% if @user %>
-      <% if @user.id %>
-      <%= link_to 'profile', user_path(@user.id) %>
+      <% if @logged_in_user %>
+      <% if @logged_in_user.id %>
+      <%= link_to 'profile', user_path(@logged_in_user.id) %>
       <% end %>
       <%= link_to 'books', books_path %>
-      <% if @user&.admin %>
+      <% if @logged_in_user&.admin %>
       <%= link_to 'users', users_path %>
+      <%= link_to 'locations', locations_path %>
       <% end %>
       <%= link_to 'logout', logout_path %>
       <% else %>
