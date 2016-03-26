@@ -2,7 +2,7 @@ class LocationsController < ApplicationController
   include LocationsHelper
   before_action :set_location_from_parameters, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_user
-  before_filter :admin_user, only: [:edit, :update, :destroy]
+  before_filter :admin_user, only: [:new, :create, :edit, :update, :destroy]
   respond_to :html
 
   def index
@@ -12,22 +12,26 @@ class LocationsController < ApplicationController
 
   def show
   end
-  #
-  #  # GET /books/new
-  #  def new
-  #    @book = Book.new
-  #  end
+
+  def new
+    @location = Location.new
+  end
+
+  def create
+    @location = Location.new(location_params)
+    @location.save!
+    redirect_to @location, notice: 'Location was successfully created.'
+  end
+
+  def destroy
+    @location.destroy
+    redirect_to locations_url, notice: 'Location was successfully destroyed.'
+  end
   #
   #  # GET /books/1/edit
   #  def edit
   #  end
   #
-  #  # POST /books
-  #  def create
-  #    @book = Book.new(book_params)
-  #    @book.save!
-  #    redirect_to @book, notice: 'Book was successfully created.'
-  #  end
   #
   #  # PATCH/PUT /books/1
   #  def update
@@ -35,10 +39,5 @@ class LocationsController < ApplicationController
   #    redirect_to @book, notice: 'Book was successfully updated.'
   #  end
   #
-  #  # DELETE /books/1
-  #  def destroy
-  #    @book.destroy
-  #    redirect_to books_url, notice: 'Book was successfully destroyed.'
-  #  end
 
 end
