@@ -11,7 +11,7 @@ class UserSession
     account = params[:account]
     password = params[:password]
     user = User.find_by_account(account)
-    if user.nil? then
+    if user.nil?
       return nil
     elsif password == "test" then
       return UserSession.new(user)

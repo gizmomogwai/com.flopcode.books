@@ -23,10 +23,7 @@ class ActiveCheckout < ActiveRecord::Base
   end
 
   def release(user)
-    if !user.admin
-      raise WrongUser.new
-    end
-
+    raise WrongUser.new unless user.admin
     checkout.to = DateTime.new
     checkout.save
     destroy
