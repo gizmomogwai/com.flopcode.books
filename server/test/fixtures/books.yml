@@ -4,14 +4,17 @@ one:
   title: book1
   authors: authors1
   user: one
-  
+  location: one
+
 two:
   title: book2
   authors: authors2
   user: two
+  location: two
 
 available:
   title: available_title
   authors: available_authors
   user: one
-  
+  location: one
+
