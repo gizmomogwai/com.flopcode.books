@@ -70,7 +70,7 @@ class ApiKeysControllerTest < ActionController::TestCase
   test "show should only answer html requests" do
     assert_raises_with_message(ActionController::UnknownFormat, 'ActionController::UnknownFormat') do
       login_as(:admin)
-      get :show, format: :json, user_id: users(:normal).id, id: api_keys(:one).id
+      get :show, format: :json, user_id: users(:normal).id, id: api_keys(:normal).id
       assert_response :not_acceptable
     end
   end
