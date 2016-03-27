@@ -16,4 +16,5 @@ class Api::V1::UsersControllerTest < Api::ApiControllerTest
       block.call(self)
     end
   end
+
 end

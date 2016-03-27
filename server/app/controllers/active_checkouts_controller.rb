@@ -16,7 +16,7 @@ class ActiveCheckoutsController < ApplicationController
 
   def destroy
     ac = ActiveCheckout.find(params[:id])
-    ac.release(@logged_in_user)
+    ac.release!(@logged_in_user)
     redirect_to root_path
   end
 
