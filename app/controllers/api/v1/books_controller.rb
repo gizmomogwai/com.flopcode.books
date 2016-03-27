@@ -3,6 +3,7 @@ class Api::V1::BooksController < Api::ApiController
   respond_to :json
   before_filter :authenticate
   before_filter :set_book, only: [:show]
+  before_filter :require_admin, only: [:create]
 
   def index
     @books = Book.all

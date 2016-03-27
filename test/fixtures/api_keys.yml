@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+normal:
   key: key1
-  for_app: app1
-  user_id: 1
+  for_app: app
+  user: normal
 
-two:
+admin:
   key: key2
-  for_app: app2
-  user_id: 2
+  for_app: app
+  user: admin

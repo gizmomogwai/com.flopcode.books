@@ -7,4 +7,8 @@ class Api::ApiController < ActionController::Base
       return @user != nil
     end
   end
+
+  def require_admin
+    head :unauthorized unless @user.admin
+  end
 end
