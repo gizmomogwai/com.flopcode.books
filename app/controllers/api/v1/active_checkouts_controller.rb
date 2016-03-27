@@ -1,5 +1,6 @@
 class Api::V1::ActiveCheckoutsController < Api::ApiController
   before_filter :authenticate
+  before_filter :require_admin, only: [:destroy]
   respond_to :json
 
   def create
@@ -9,6 +10,7 @@ class Api::V1::ActiveCheckoutsController < Api::ApiController
 
   def destroy
     ac = ActiveCheckout.find(params[:id])
-    head ac.release(@user)
+    ac.release!(@user)
+    head :ok
   end
 end
