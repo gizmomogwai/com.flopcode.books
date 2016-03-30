@@ -24,7 +24,6 @@ class Api::V1::BooksControllerTest < Api::ApiControllerTest
       x.assert_response :unauthorized
     },
     admin: -> (x) {
-      byebug
       x.assert_response :success
     }
   }.each do |key, block|

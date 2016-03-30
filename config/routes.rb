@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       resources :users
       resources :checkouts
       resources :active_checkouts
+      resources :locations
     end
   end
 
