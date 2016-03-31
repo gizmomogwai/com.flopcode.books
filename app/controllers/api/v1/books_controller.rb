@@ -6,8 +6,16 @@ class Api::V1::BooksController < Api::ApiController
   before_filter :require_admin, only: [:create]
 
   def index
-    @books = Book.all
-    respond_with @books
+    respond_with Book.all.map {|book|
+      { id: book.id,
+        isbn: book.isbn,
+        title: book.title,
+        authors: book.authors,
+        user_id: book.user&.id,
+        location_id: book.location&.id,
+        active_checkout_id: book.active_checkout&.id
+      }
+    }
   end
 
   def show
