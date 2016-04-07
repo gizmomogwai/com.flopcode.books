@@ -7,6 +7,8 @@ class ActiveCheckout < ActiveRecord::Base
 
   def self.for(user, book)
     raise BookTaken.new if book.active_checkout
+    raise 'no user given' unless user
+    raise 'no book given' unless book
 
     ac = ActiveCheckout.new
     ac.book = book
@@ -18,7 +20,7 @@ class ActiveCheckout < ActiveRecord::Base
 
     ac.checkout = c
 
-    ac.save
+    ac.save!
     ac
   end
 
