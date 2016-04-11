@@ -14,7 +14,7 @@ class Api::V1::BooksController < Api::ApiController
         authors: book.authors,
         user_id: book.user&.id,
         location_id: book.location&.id,
-        active_checkout_id: book.active_checkout&.id
+        active_checkout_id: book.active_checkout&.checkout&.user&.id
       }
     }
   end
