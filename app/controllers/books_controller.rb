@@ -9,7 +9,11 @@ class BooksController < ApplicationController
 
   # GET /books
   def index
-    @books = Book.all
+    if params[:query]
+      @books = Book.search(params[:query])
+    else
+      @books = Book.all
+    end
     respond_with @books
   end
 
