@@ -29,7 +29,7 @@ class ApiKeysController < ApplicationController
   def show
     check_user {
       require 'rqrcode'
-      @qr = RQRCode::QRCode.new("books-api-key://books/#{user_api_key_path(@user, @api_key)}", :size => 8, :level => :h )
+      @qr = RQRCode::QRCode.new("books-api-key://books/#{user_api_key_path(@user, @api_key.key)}", :size => 8, :level => :h )
       respond_with @qr, @api_key
     }
   end

@@ -10,6 +10,7 @@
       <th>Title</th>
       <th>Authors</th>
       <th>Owner</th>
+      <th>Location</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -22,6 +23,7 @@
         <td><%= book.title %></td>
         <td><%= book.authors %></td>
         <td><%= book.user&.name %></td>
+        <td><%= book.location&.name %></td>
         <% if book.active_checkout %>
         <td><%= button_to 'checkin', book.active_checkout, method: :delete %></td>
         <% else %>
