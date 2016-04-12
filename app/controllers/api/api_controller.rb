@@ -4,7 +4,8 @@ class Api::ApiController < ActionController::Base
     authenticate_or_request_with_http_token do |token, option|
       api_key = ApiKey.where(key: token).first
       @user = api_key&.user
-      return @user != nil
+      raise 'please use api key to authorize' unless @user
+      true
     end
   end
 

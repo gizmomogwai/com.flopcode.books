@@ -20,7 +20,7 @@
     </tr>
     <% @user.checkouts.each do |checkout| %>
     <tr>
-      <td><%= link_to checkout.book.title, checkout.book %></td>
+      <td><%= link_to checkout.book&.title, checkout.book %></td>
       <td><%= checkout.from %>
       <td><%= checkout.to %>
     </tr>
