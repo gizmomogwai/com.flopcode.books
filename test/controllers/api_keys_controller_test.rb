@@ -40,10 +40,8 @@ class ApiKeysControllerTest < ActionController::TestCase
     test "show api key for other user as '#{user}' users" do
       normal_user = users(:normal)
       key = normal_user.create_api_key("test")
-
       login_as(user)
-
-      get :show, id: key.id, user_id: users(:normal).id
+      get :show, user_id: users(user).id, id: key.id
       block.call(self)
     end
   end

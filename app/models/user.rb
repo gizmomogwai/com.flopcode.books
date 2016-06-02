@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
     api_key = ApiKey.new
     api_key.user = self
     api_key.for_app = for_app
+    api_key.key = SecureRandom.hex
     api_key.save
     return api_key
   end

@@ -12,8 +12,7 @@ class ApiKeysController < ApplicationController
 
   def create
     check_user {
-      @api_key = @user.api_keys.build(api_key_params)
-      @api_key.key = SecureRandom.hex
+      @api_key = @user.create_api_key(api_key_params[:for_app])
       @api_key.save
       redirect_to user_path(@user)
     }
@@ -27,7 +26,7 @@ class ApiKeysController < ApplicationController
   end
 
   def show
-    check_user {
+    check_user(@logged_in_user, @api_key.user) {
       require 'rqrcode'
       @qr = RQRCode::QRCode.new("books-api-key://books/#{user_api_key_path(@user, @api_key.key)}", :size => 8, :level => :h )
       respond_with @qr, @api_key
