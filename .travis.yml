@@ -1,5 +1,3 @@
 language: ruby
-script:
-  - bundle exec rake db:migrate
-  - bundle exec rake test
+script: bundle exec rake db:migrate && bundle exec rake test
 sudo: false
