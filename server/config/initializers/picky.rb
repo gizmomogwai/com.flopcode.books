@@ -11,6 +11,7 @@ def restartIndex
   at_exit { BookIndex.dump }
 end
 
+puts "BookTable #{Book.table_exists?}"
 if Book.table_exists?
   BookIndex = Picky::Index.new :books do
     source Book.all
