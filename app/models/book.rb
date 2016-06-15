@@ -7,11 +7,19 @@ class Book < ActiveRecord::Base
   after_destroy :remove_from_index
 
   def add_to_index
-    BookIndex.replace(self)
+    begin
+      BookIndex.replace(self)
+    rescue
+      puts "BookIndex not available"
+    end
   end
 
   def remove_from_index
-    BookIndex.remove(id)
+    begin
+      BookIndex.remove(id)
+    rescue
+      puts "BookIndex not available"
+    end
   end
 
   def self.search keys
