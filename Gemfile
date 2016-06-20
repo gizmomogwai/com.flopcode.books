@@ -29,6 +29,7 @@ gem 'responders'
 gem 'picky'
 gem 'text'
 gem 'procrastinate'
+gem 'libv8', '~> 3.16.14.15'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
