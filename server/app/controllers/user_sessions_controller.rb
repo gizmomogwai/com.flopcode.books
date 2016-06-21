@@ -8,6 +8,7 @@ class UserSessionsController < ApplicationController
     session[:user] = @user_session
     if session[:user]
       flash[:message] = "Login successful"
+      redirect_to books_url
     else
       flash[:warning] = "Login failed"
     end
@@ -15,6 +16,7 @@ class UserSessionsController < ApplicationController
 
   def destroy
     session.delete(:user)
+    redirect_to :login
   end
 
   def user_session_params
