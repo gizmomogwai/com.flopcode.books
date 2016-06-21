@@ -16,8 +16,8 @@
   <tbody>
     <% @checkouts.each do |checkout| %>
       <tr>
-        <td><%= checkout.from %></td>
-        <td><%= checkout.to %></td>
+        <td><%= datetime_for_ui(checkout.from) %></td>
+        <td><%= datetime_for_ui(checkout.to) %></td>
         <td><%= checkout.user %></td>
         <td><%= checkout.book %></td>
         <td><%= link_to 'Show', checkout %></td>

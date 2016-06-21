@@ -21,8 +21,8 @@
     <% @user.checkouts.each do |checkout| %>
     <tr>
       <td><%= link_to checkout.book&.title, checkout.book %></td>
-      <td><%= checkout.from %>
-      <td><%= checkout.to %>
+      <td><%= datetime_for_ui(checkout.from) %>
+      <td><%= datetime_for_ui(checkout.to) %>
     </tr>
     <% end %>
   </table>

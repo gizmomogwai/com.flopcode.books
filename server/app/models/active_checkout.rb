@@ -14,7 +14,7 @@ class ActiveCheckout < ActiveRecord::Base
     ac.book = book
 
     c = Checkout.new
-    c.from = DateTime.new
+    c.from = Time.new
     c.user = user
     c.book = book
 
@@ -27,7 +27,7 @@ class ActiveCheckout < ActiveRecord::Base
   def release!(user)
     raise WrongUser.new unless user.admin
 
-    checkout.to = DateTime.new
+    checkout.to = Time.new
     checkout.save!
 
     destroy

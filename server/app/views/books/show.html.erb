@@ -39,8 +39,8 @@
     <% @book.checkouts.each do |checkout| %>
     <tr>
       <td><%= checkout.user.name %></td>
-      <td><%= checkout.from %></td>
-      <td><%= checkout.to %></td>
+      <td><%= datetime_for_ui(checkout.from) %></td>
+      <td><%= datetime_for_ui(checkout.to) %></td>
     </tr>
     <% end %>
   </table>
