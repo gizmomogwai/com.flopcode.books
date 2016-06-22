@@ -264,7 +264,7 @@ public class Show extends BooksActivity {
           showError(this, "not writeable");
           return;
         }
-        NdefMessage message = new NdefMessage(new NdefRecord[]{NdefRecord.createUri("books:///1")});
+        NdefMessage message = new NdefMessage(new NdefRecord[]{NdefRecord.createUri("books:///" + book.id)});
         ndef.writeNdefMessage(message);
       } catch (Exception e) {
         showError(this, "problems " + e.getMessage());
