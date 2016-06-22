@@ -39,6 +39,10 @@ public class Index extends BooksActivity {
   FloatingActionButton addFab;
   private CardAdapter cardAdapter;
 
+  public static void showBook(Context c, Book book) {
+    c.startActivity(new Intent(c, Show.class).putExtra("book", book));
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -104,10 +108,6 @@ public class Index extends BooksActivity {
     return getBooksApplication().getBooks() != null;
   }
 
-  public static void showBook(Context c, Book book) {
-    c.startActivity(new Intent(c, Show.class).putExtra("book", book));
-  }
-
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.index, menu);
@@ -144,6 +144,37 @@ public class Index extends BooksActivity {
     updateUi();
   }
 
+  static class BookHolder extends RecyclerView.ViewHolder {
+    public TextView title;
+    public TextView authors;
+    public TextView isbn;
+    public TextView status;
+    private Book book;
+
+    public BookHolder(View itemView) {
+      super(itemView);
+      itemView.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          showBook(v.getContext(), book);
+        }
+      });
+      title = ButterKnife.findById(itemView, R.id.title);
+      authors = ButterKnife.findById(itemView, R.id.authors);
+      isbn = ButterKnife.findById(itemView, R.id.isbn);
+      status = ButterKnife.findById(itemView, R.id.status);
+    }
+
+    public void setBook(Book book, BooksActivity a) {
+      this.book = book;
+
+      title.setText(book.title);
+      authors.setText(book.authors);
+      isbn.setText(book.isbn);
+      status.setText("status: " + book.status(a.getBooksApplication().users, a.getBooksApplication().getUserId(a)));
+    }
+  }
+
   private class CardAdapter extends RecyclerView.Adapter<BookHolder> {
 
     private List<Book> books;
@@ -171,37 +202,6 @@ public class Index extends BooksActivity {
       if (books == null) return 0;
 
       return books.size();
-    }
-  }
-
-  static class BookHolder extends RecyclerView.ViewHolder {
-    private Book book;
-    public TextView title;
-    public TextView authors;
-    public TextView isbn;
-    public TextView status;
-
-    public BookHolder(View itemView) {
-      super(itemView);
-      itemView.setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          showBook(v.getContext(), book);
-        }
-      });
-      title = ButterKnife.findById(itemView, R.id.title);
-      authors = ButterKnife.findById(itemView, R.id.authors);
-      isbn = ButterKnife.findById(itemView, R.id.isbn);
-      status = ButterKnife.findById(itemView, R.id.status);
-    }
-
-    public void setBook(Book book, BooksActivity a) {
-      this.book = book;
-
-      title.setText(book.title);
-      authors.setText(book.authors);
-      isbn.setText(book.isbn);
-      status.setText("status: " + book.status(a.getBooksApplication().users, a.getBooksApplication().getUserId(a)));
     }
   }
 }

@@ -9,19 +9,19 @@
     android:id="@+id/logoImageView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:src="@drawable/esr_logo" />
+    android:src="@drawable/esr_logo"/>
   <TableLayout android:layout_width="match_parent" android:layout_height="wrap_content">
     <TableRow android:layout_height="wrap_content" android:layout_width="match_parent" android:gravity="center">
       <TextView
         android:text="User:"
         android:gravity="right"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent"/>
       <EditText
         android:id="@+id/user_account"
         android:hint="your username"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+        android:layout_width="wrap_content"/>
     </TableRow>
     <TableRow
       android:layout_height="wrap_content"
@@ -31,13 +31,13 @@
         android:text="Server:"
         android:gravity="right"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent"/>
       <EditText
         android:id="@+id/books_server"
         android:text="http://192.168.0.104:3000"
         android:hint="books server address"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent"/>
     </TableRow>
     <TableRow
       android:layout_marginTop="30dp"
@@ -48,7 +48,7 @@
         android:id="@+id/startUseButton"
         android:text="Start reading"
         android:layout_span="2"
-        android:background="@drawable/esr_button" />
+        android:background="@drawable/esr_button"/>
     </TableRow>
   </TableLayout>
 </LinearLayout>

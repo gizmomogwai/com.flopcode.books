@@ -1,6 +1,6 @@
 * Bücherwurm
   [[logo.jpg]]
-
+  [[https://travis-ci.org/gizmomogwai/com.flopcode.books][https://travis-ci.org/gizmomogwai/com.flopcode.books.svg?branch=master]]
 ** Prerequisites
 - the server must work (please run in the server directory)
   - rvm install 2.3.1

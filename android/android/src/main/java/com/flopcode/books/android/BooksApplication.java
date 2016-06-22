@@ -1,7 +1,5 @@
 package com.flopcode.books.android;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -9,10 +7,8 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +17,6 @@ import com.flopcode.books.BooksApi.BooksService;
 import com.flopcode.books.BooksApi.LocationsService;
 import com.flopcode.books.BooksApi.ServerAliveService;
 import com.flopcode.books.BooksApi.UsersService;
-import com.flopcode.books.android.views.FirstRunDialog;
 import com.flopcode.books.android.views.books.BooksActivity;
 import com.flopcode.books.models.Book;
 import com.flopcode.books.models.Location;
@@ -41,10 +36,44 @@ public class BooksApplication extends Application {
   private static final String BOOKS_SERVER = "booksServer";
   private static final String USER_ID = "userId";
   private static final String USER_ACCOUNT = "userAccount";
+  public List<Book> books = null;
+  public List<User> users = null;
+  public List<Location> locations = null;
   private ServerAliveService serverAliveService;
   private BooksService booksService;
   private UsersService usersService;
   private LocationsService locationsService;
+
+  public static SharedPreferences getSharedPreferences(Context c) {
+    return c.getSharedPreferences("books", MODE_PRIVATE);
+  }
+
+  public static void showError(Activity c, String s) {
+    final Snackbar snackbar = Snackbar.make(c.findViewById(R.id.coordinatorLayout), s, Snackbar.LENGTH_LONG);
+    snackbar.show();
+  }
+
+  public static void showError(Activity c, String s, String buttonText, OnClickListener onClickListener) {
+    final Snackbar snackbar = Snackbar.make(c.findViewById(R.id.coordinatorLayout), s, Snackbar.LENGTH_LONG);
+    snackbar.setAction(buttonText, onClickListener);
+    snackbar.show();
+  }
+
+  public static void storeUserAccount(Context c, String account) {
+    storeStringPref(c, USER_ACCOUNT, account);
+  }
+
+  private static void storeLongPref(Context c, String id, long v) {
+    getSharedPreferences(c).edit().putLong(id, v).commit();
+  }
+
+  private static void storeStringPref(Context c, String id, String v) {
+    getSharedPreferences(c).edit().putString(id, v).commit();
+  }
+
+  public static void storeBooksServer(Context c, String v) {
+    storeStringPref(c, BOOKS_SERVER, v);
+  }
 
   @Override
   public void onCreate() {
@@ -66,10 +95,6 @@ public class BooksApplication extends Application {
     super.onTerminate();
   }
 
-  public static SharedPreferences getSharedPreferences(Context c) {
-    return c.getSharedPreferences("books", MODE_PRIVATE);
-  }
-
   private String getPreference(Context c, String s) {
     return getPreference(c, s, null);
   }
@@ -86,54 +111,29 @@ public class BooksApplication extends Application {
     return getPreference(c, BOOKS_SERVER);
   }
 
-  public static void showStartScreenError(Activity c, String s) {
-    final Snackbar snackbar = Snackbar.make(c.findViewById(R.id.linearLayout), s, Snackbar.LENGTH_LONG);
-    snackbar.show();
-  }
-
-  public static void showError(Activity c, String s) {
-    final Snackbar snackbar = Snackbar.make(c.findViewById(R.id.coordinatorLayout), s, Snackbar.LENGTH_LONG);
-    snackbar.show();
-  }
-
-  public static void showError(Activity c, String s, String buttonText, OnClickListener onClickListener) {
-    final Snackbar snackbar = Snackbar.make(c.findViewById(R.id.coordinatorLayout), s, Snackbar.LENGTH_LONG);
-    snackbar.setAction(buttonText, onClickListener);
-    snackbar.show();
-  }
-
-  public List<Book> books = null;
-  public List<User> users = null;
-  public List<Location> locations = null;
-
-  public void setBooks(List<Book> books) {
-    this.books = books;
-  }
-
   public List<Book> getBooks() {
     return books;
   }
 
-  public void setUsers(List<User> users) {
-    this.users = users;
+  public void setBooks(List<Book> books) {
+    this.books = books;
   }
 
   public List<User> getUsers() {
     return users;
   }
 
-  public void setLocations(List<Location> locations) {
-    this.locations = locations;
+  public void setUsers(List<User> users) {
+    this.users = users;
   }
 
   public List<Location> getLocations() {
     return locations;
   }
 
-  public static void storeUserAccount(Context c, String account) {
-    storeStringPref(c, USER_ACCOUNT, account);
+  public void setLocations(List<Location> locations) {
+    this.locations = locations;
   }
-
 
   public boolean hasUserAccount(Context c) {
     return getUserAccount(c) != null;
@@ -162,18 +162,6 @@ public class BooksApplication extends Application {
   private void storeUserId(long userId) {
     Log.i(LOG_TAG, "storeUserId" + userId);
     storeLongPref(this, USER_ID, userId);
-  }
-
-  private static void storeLongPref(Context c, String id, long v) {
-    getSharedPreferences(c).edit().putLong(id, v).commit();
-  }
-
-  private static void storeStringPref(Context c, String id, String v) {
-    getSharedPreferences(c).edit().putString(id, v).commit();
-  }
-
-  public static void storeBooksServer(Context c, String v) {
-    storeStringPref(c, BOOKS_SERVER, v);
   }
 
   public long getUserId(Context c) {
@@ -206,16 +194,6 @@ public class BooksApplication extends Application {
     locationsService = null;
   }
 
-  public String getEsrGoogleAccount() {
-    AccountManager manager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
-    Account[] list = manager.getAccounts();
-    for (Account acc:list) {
-      if (acc.name.contains("esrlabs"))
-        return acc.name;
-    }
-    return "";
-  }
-
   public void fetchData(final BooksActivity a) {
     if (!a.getBooksApplication().hasApiKey(a)) {
       showError(a, "You don't have API key", "Add", new OnClickListener() {
@@ -236,6 +214,16 @@ public class BooksApplication extends Application {
     updatedLayout.setRefreshing(false);
   }
 
+  public Boolean serverExists() {
+    try {
+      HttpURLConnection connection = (HttpURLConnection) new URL(getBooksServer(this)).openConnection();
+      connection.setRequestMethod("HEAD");
+      return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
   private void createServices(BooksActivity a) {
     final String apiKey = a.getBooksApplication().getApiKey(this);
 
@@ -252,23 +240,6 @@ public class BooksApplication extends Application {
     if (locationsService == null) {
       locationsService = BooksApi.createLocationsService(a.getBooksApplication().getBooksServer(this), apiKey);
     }
-  }
-
-  public void checkServerOnFirstStart(final FirstRunDialog a) {
-    ServerAliveService aliveService = BooksApi.createServerAliveService(a.getBooksApplication().getBooksServer(this), "");
-    serverAliveService.alive().enqueue(new Callback<Void>() {
-
-      @Override
-      public void onResponse(Call<Void> call, Response<Void> response) {
-        a.serverIsAlive();
-      }
-
-      @Override
-      public void onFailure(Call<Void> call, Throwable t) {
-        showStartScreenError(a, "Server is not available");
-        a.serverNotAlive();
-      }
-    });
   }
 
   public void checkServerAlive(final BooksActivity a) {

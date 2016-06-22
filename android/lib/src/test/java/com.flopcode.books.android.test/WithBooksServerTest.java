@@ -14,11 +14,62 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map.Entry;
 import java.util.Scanner;
 
 public abstract class WithBooksServerTest {
   public static final String booksServer = "http://127.0.0.1:3000";
+  private AutonomeProcess railsServer;
+
+  @Before
+  public void setUp() throws Exception {
+    System.out.println("WithBooksServerTest.setUp");
+    railsServer = AutonomeProcess.run(new File("../../server"), true, null, "WEBrick::HTTPServer#start", System.getProperty("user.home") + "/.rvm/gems/ruby-2.3.1@books/wrappers/bundle", "exec", "rake", "run_testserver");
+    waitForRailsServer();
+  }
+
+  // try for some seconds to connect to the rails server
+  private void waitForRailsServer() {
+    System.out.println("WithBooksServerTest.waitForRailsServer");
+    DateTime startTime = DateTime.now();
+    int retry = 0;
+    while (true) {
+      retry++;
+      try {
+        URL u = new URL("http://127.0.0.1:3000/books");
+
+        URLConnection connection = u.openConnection();
+
+        connection.setConnectTimeout(2000);
+        connection.connect();
+        /*
+        Call<List<Book>> call = BooksApi.createBooksService(u, "key1").index();
+        Response<List<Book>> response = call.execute();
+        if (!response.isSuccess()) {
+          throw new RuntimeException("could not get index from books service");
+        }
+        */
+        return;
+      } catch (Exception e) {
+        System.out.println("WithBooksServerTest.waitForRailsServer retry: " + retry);
+        retry++;
+      }
+      Seconds i = Seconds.secondsBetween(startTime, DateTime.now());
+      if (i.isGreaterThan(Seconds.seconds(15))) {
+        return;
+      }
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  @After
+  public void tearDown() {
+    System.out.println("WithBooksServerTest.tearDown");
+    railsServer.destroy();
+  }
 
   static class Puller extends Thread {
 
@@ -77,6 +128,22 @@ public abstract class WithBooksServerTest {
       this.stderr.start();
       this.stdout.waitFor(stdout);
       this.stderr.waitFor(stderr);
+    }
+
+    public static AutonomeProcess run(File workingDirectory, boolean debug, String stdout, String stderr, String... command) throws Exception {
+      if (!workingDirectory.exists()) {
+
+        throw new RuntimeException("working directory does not exist " + new File(".").getAbsolutePath());
+      }
+      System.out.println("workingDirectory = " + workingDirectory.getAbsoluteFile());
+      for (File f : workingDirectory.getAbsoluteFile().listFiles()) {
+        System.out.println("f = " + f);
+      }
+      System.out.println("AutonomeProcess.run");
+      for (String s : command) {
+        System.out.println("s = " + s);
+      }
+      return new AutonomeProcess(new ProcessBuilder(command).directory(workingDirectory.getAbsoluteFile()).start(), debug, stdout, stderr);
     }
 
     private long getPid(Process p) throws Exception {
@@ -144,22 +211,6 @@ public abstract class WithBooksServerTest {
       return Long.parseLong(pid);
     }
 
-    public static AutonomeProcess run(File workingDirectory, boolean debug, String stdout, String stderr, String... command) throws Exception {
-      if (!workingDirectory.exists()) {
-
-        throw new RuntimeException("working directory does not exist " + new File(".").getAbsolutePath());
-      }
-      System.out.println("workingDirectory = " + workingDirectory.getAbsoluteFile());
-      for (File f: workingDirectory.getAbsoluteFile().listFiles()) {
-        System.out.println("f = " + f);
-      }
-      System.out.println("AutonomeProcess.run");
-      for (String s : command) {
-        System.out.println("s = " + s);
-      }
-      return new AutonomeProcess(new ProcessBuilder(command).directory(workingDirectory.getAbsoluteFile()).start(), debug, stdout, stderr);
-    }
-
     public String waitFor() throws Exception {
       process.waitFor();
       stdout.join();
@@ -181,59 +232,6 @@ public abstract class WithBooksServerTest {
       System.err.flush();
     }
 
-  }
-
-  private AutonomeProcess railsServer;
-
-  @Before
-  public void setUp() throws Exception {
-    System.out.println("WithBooksServerTest.setUp");
-    railsServer = AutonomeProcess.run(new File("../../server"), true, null, "WEBrick::HTTPServer#start", System.getProperty("user.home") + "/.rvm/gems/ruby-2.3.1@books/wrappers/bundle", "exec", "rake", "run_testserver");
-    waitForRailsServer();
-  }
-
-  // try for some seconds to connect to the rails server
-  private void waitForRailsServer() {
-    System.out.println("WithBooksServerTest.waitForRailsServer");
-    DateTime startTime = DateTime.now();
-    int retry = 0;
-    while (true) {
-      retry++;
-      try {
-        URL u = new URL("http://127.0.0.1:3000/books");
-
-        URLConnection connection = u.openConnection();
-
-        connection.setConnectTimeout(2000);
-        connection.connect();
-        /*
-        Call<List<Book>> call = BooksApi.createBooksService(u, "key1").index();
-        Response<List<Book>> response = call.execute();
-        if (!response.isSuccess()) {
-          throw new RuntimeException("could not get index from books service");
-        }
-        */
-        return;
-      } catch (Exception e) {
-        System.out.println("WithBooksServerTest.waitForRailsServer retry: " + retry);
-        retry++;
-      }
-      Seconds i = Seconds.secondsBetween(startTime, DateTime.now());
-      if (i.isGreaterThan(Seconds.seconds(15))) {
-        return;
-      }
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-    }
-  }
-
-  @After
-  public void tearDown() {
-    System.out.println("WithBooksServerTest.tearDown");
-    railsServer.destroy();
   }
 
 

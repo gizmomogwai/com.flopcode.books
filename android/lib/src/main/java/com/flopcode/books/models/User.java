@@ -15,6 +15,6 @@ public class User {
 
   @Override
   public String toString() {
-    return "User { id: " + id + ", name: " + name + ", account: " + account + ", admin: " + admin  + " }";
+    return "User { id: " + id + ", name: " + name + ", account: " + account + ", admin: " + admin + " }";
   }
 }

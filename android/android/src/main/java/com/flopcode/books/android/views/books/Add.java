@@ -35,22 +35,17 @@ public class Add extends BooksActivity {
 
   // Intent Key for starting a barcode scan. Supply a boolean true with it.
   public static final String START_BARCODE_SCAN = "START_BARCODE_SCAN";
-
-  private BooksService booksService;
   @Bind(R.id.book_isbn)
   public EditText isbn;
-
   @Bind(R.id.book_title)
   public EditText title;
-
   @Bind(R.id.book_authors)
   public EditText authors;
-
   @Bind(R.id.book_owner)
   public Spinner owner;
-
   @Bind(R.id.book_location)
   public Spinner location;
+  private BooksService booksService;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +71,12 @@ public class Add extends BooksActivity {
 
   @OnClick(R.id.ok_button)
   public void onAddButton(View v) {
-    if (isbn.getText().toString().equals("") || title.getText().toString().equals("")  || authors.getText().toString().equals("")){
+    if (isbn.getText().toString().equals("") || title.getText().toString().equals("") || authors.getText().toString().equals("")) {
       Toast.makeText(this, "ISBN, Title, and Authors need to be filled in!", Toast.LENGTH_LONG).show();
       return;
     }
 
-    Book b = new Book(0, isbn.getText().toString(), title.getText().toString(), authors.getText().toString(), ((User)owner.getSelectedItem()).id, ((Location)location.getSelectedItem()).id, -1);
+    Book b = new Book(0, isbn.getText().toString(), title.getText().toString(), authors.getText().toString(), ((User) owner.getSelectedItem()).id, ((Location) location.getSelectedItem()).id, -1);
     booksService.create(b.isbn, b.title, b.authors, b.userId, b.locationId).enqueue(new Callback<Book>() {
       @Override
       public void onResponse(Call<Book> call, Response<Book> response) {
@@ -105,14 +100,13 @@ public class Add extends BooksActivity {
     });
   }
 
-  private void setOwners()
-  {
+  private void setOwners() {
     final ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item) {
       @Override
       public View getView(int position, View convertView, ViewGroup parent) {
         View res = super.getView(position, convertView, parent);
         User item = getItem(position);
-        ((TextView)res).setText(item.account);
+        ((TextView) res).setText(item.account);
         return res;
       }
     };
@@ -121,14 +115,13 @@ public class Add extends BooksActivity {
     owner.setAdapter(adapter);
   }
 
-  private void setLocations()
-  {
+  private void setLocations() {
     final ArrayAdapter<Location> adapter = new ArrayAdapter<Location>(this, android.R.layout.simple_spinner_item) {
       @Override
       public View getView(int position, View convertView, ViewGroup parent) {
         View res = super.getView(position, convertView, parent);
         Location item = getItem(position);
-        ((TextView)res).setText(item.name);
+        ((TextView) res).setText(item.name);
         return res;
       }
     };

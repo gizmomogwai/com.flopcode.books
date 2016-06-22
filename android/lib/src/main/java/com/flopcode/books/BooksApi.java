@@ -41,55 +41,15 @@ import java.util.concurrent.TimeUnit;
 public class BooksApi {
 
   private static final String FLUNDER_HOME = "192.168.1.100";
+  public static final String BOOKS_SERVER_IP = FLUNDER_HOME;
   private static final String OFFICE = "172.31.2.34";
   private static final String BLACKBOX = "192.168.1.16";
-  public static final String BOOKS_SERVER_IP = FLUNDER_HOME;
   private final static String API = "api/v1";
 
   private final static String BOOKS_API = API + "/books";
   private final static String LOCATIONS_API = API + "/locations";
   private final static String ACTIVE_CHECKOUTS_API = API + "/active_checkouts";
   private final static String USERS_API = API + "/users";
-
-
-  public interface UsersService {
-    @GET(USERS_API)
-    @Headers("Accept: application/json")
-    Call<List<User>> index();
-  }
-
-  public interface LocationsService {
-    @GET(LOCATIONS_API)
-    @Headers("Accept: application/json")
-    Call<List<Location>> index();
-  }
-
-  public interface ServerAliveService {
-    @HEAD(BOOKS_API)
-    @Headers("Accept: application/json")
-    Call<Void> alive();
-  }
-
-  public interface BooksService {
-
-    @GET(BOOKS_API)
-    @Headers("Accept: application/json")
-    Call<List<Book>> index();
-
-    @FormUrlEncoded
-    @POST(BOOKS_API)
-    @Headers("Accept: application/json")
-    Call<Book> create(@Field("book[isbn]") String isbn,
-                      @Field("book[title]") String title,
-                      @Field("book[authors]") String authors,
-                      @Field("book[user_id]") long userId,
-                      @Field("book[location_id]") long locationId);
-
-    @GET(BOOKS_API + "/{id}")
-    @Headers("Accept: application/json")
-    Call<Book> show(@Path("id") String id);
-
-  }
 
   public static BooksService createBooksService(String url, String apiKey) {
     Retrofit rf = retrofitWithLogging(apiKey)
@@ -123,17 +83,6 @@ public class BooksApi {
     return rf.create(ServerAliveService.class);
   }
 
-  public interface ActiveCheckoutsService {
-    @FormUrlEncoded
-    @POST(ACTIVE_CHECKOUTS_API)
-    @Headers("Accept: application/json")
-    Call<ActiveCheckout> create(@Field("book") long bookId);
-
-    @DELETE(ACTIVE_CHECKOUTS_API + "/{id}")
-    @Headers("Accept: application/json")
-    Call<Void> destroy(@Path("id") String activeCheckoutId);
-  }
-
   public static ActiveCheckoutsService createActiveCheckoutsService(String url, String apiKey) {
     Retrofit rf = retrofitWithLogging(apiKey)
       .baseUrl(url)
@@ -153,11 +102,6 @@ public class BooksApi {
       .writeTimeout(2, TimeUnit.SECONDS)
       .build();
     return new Retrofit.Builder().client(httpClient);
-  }
-
-  public interface IsbnLookupService {
-    @GET("books/v1/volumes")
-    Call<Book> find(@Query("q") String isbn);
   }
 
   public static IsbnLookupService createIsbnLookupService() {
@@ -203,6 +147,61 @@ public class BooksApi {
         return null;
       }
     };
+  }
+
+  public interface UsersService {
+    @GET(USERS_API)
+    @Headers("Accept: application/json")
+    Call<List<User>> index();
+  }
+
+  public interface LocationsService {
+    @GET(LOCATIONS_API)
+    @Headers("Accept: application/json")
+    Call<List<Location>> index();
+  }
+
+  public interface ServerAliveService {
+    @HEAD(BOOKS_API)
+    @Headers("Accept: application/json")
+    Call<Void> alive();
+  }
+
+  public interface BooksService {
+
+    @GET(BOOKS_API)
+    @Headers("Accept: application/json")
+    Call<List<Book>> index();
+
+    @FormUrlEncoded
+    @POST(BOOKS_API)
+    @Headers("Accept: application/json")
+    Call<Book> create(@Field("book[isbn]") String isbn,
+                      @Field("book[title]") String title,
+                      @Field("book[authors]") String authors,
+                      @Field("book[user_id]") long userId,
+                      @Field("book[location_id]") long locationId);
+
+    @GET(BOOKS_API + "/{id}")
+    @Headers("Accept: application/json")
+    Call<Book> show(@Path("id") String id);
+
+  }
+
+  public interface ActiveCheckoutsService {
+    @FormUrlEncoded
+    @POST(ACTIVE_CHECKOUTS_API)
+    @Headers("Accept: application/json")
+    Call<ActiveCheckout> create(@Field("book") long bookId);
+
+    @DELETE(ACTIVE_CHECKOUTS_API + "/{id}")
+    @Headers("Accept: application/json")
+    Call<Void> destroy(@Path("id") String activeCheckoutId);
+  }
+
+  public interface IsbnLookupService {
+    @GET("books/v1/volumes")
+    Call<Book> find(@Query("q") String isbn);
   }
 
   private static class AddAuthorizationHeaderInterceptor implements Interceptor {

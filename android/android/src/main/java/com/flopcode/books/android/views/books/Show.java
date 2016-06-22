@@ -45,31 +45,23 @@ import static com.flopcode.books.android.BooksApplication.showError;
 public class Show extends BooksActivity {
 
   private static final int TAG_DETECTED = 17;
+  @Bind(R.id.book_id)
+  TextView id;
+  @Bind(R.id.book_isbn)
+  TextView isbn;
+  @Bind(R.id.book_title)
+  TextView title;
+  @Bind(R.id.book_authors)
+  TextView authors;
+  @Bind(R.id.book_owner)
+  TextView owner;
+  @Bind(R.id.location)
+  TextView location;
+  @Bind(R.id.checkout_checkin_button)
+  Button checkoutCheckinButton;
   private NfcAdapter nfcAdapter;
   private PendingIntent pendingIntent;
   private IntentFilter discovery;
-
-  @Bind(R.id.book_id)
-  TextView id;
-
-  @Bind(R.id.book_isbn)
-  TextView isbn;
-
-  @Bind(R.id.book_title)
-  TextView title;
-
-  @Bind(R.id.book_authors)
-  TextView authors;
-
-  @Bind(R.id.book_owner)
-  TextView owner;
-
-  @Bind(R.id.location)
-  TextView location;
-
-  @Bind(R.id.checkout_checkin_button)
-  Button checkoutCheckinButton;
-
   private Book book;
 
   private ActiveCheckoutsService checkoutsService;
