@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.flopcode.books.android">
+
+  <uses-permission
+    android:name="android.permission.INTERNET"/>
+  <uses-permission
+    android:name="android.permission.NFC"/>
+
+  <application
+    android:name="com.flopcode.books.android.BooksApplication"
+    android:theme="@style/Theme.AppCompat.DayNight">
+    <activity
+      android:name=".views.books.Index"
+      android:label="@string/title_activity_books">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+
+    <activity
+      android:name=".views.books.Add"
+      android:label="@string/title_activity_add_book"
+      android:parentActivityName=".views.books.Index">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".views.books.Index"/>
+    </activity>
+    <activity
+      android:name=".views.PreferencesActivity"
+      android:label="Prefs"
+      android:parentActivityName=".views.books.Index"
+    />
+    <activity
+      android:name=".views.books.Show"
+      android:label="@string/title_activity_show_book"
+      android:parentActivityName="com.flopcode.books.android.views.books.Index"
+      android:launchMode="singleTop">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".views.books.Index"/>
+
+      <intent-filter>
+        <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <data android:scheme="books"/>
+      </intent-filter>
+
+    </activity>
+
+    <activity
+      android:name=".views.ImportApiKey"
+      android:label="Import Api Key">
+      <intent-filter>
+        <action
+          android:name="android.intent.action.VIEW"/>
+        <category
+          android:name="android.intent.category.DEFAULT"/>
+        <category
+          android:name="android.intent.category.BROWSABLE"/>
+        <data
+          android:scheme="books-api-key"/>
+      </intent-filter>
+    </activity>
+
+  </application>
+
+</manifest>
