@@ -7,11 +7,12 @@ android:
     - platform-tools
     - build-tools-24.0.0
     - android-23
-    - extra-android-m2repository
     - extra-android-support
+#    - extra-android-m2repository
 
 script:
     - rvm install 2.3.1
     - rvm use 2.3.1@books --create
     - cd server && gem install bundler && bundle install
+    - cd ..
     - cd android && ./gradlew build
