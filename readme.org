@@ -1,6 +1,9 @@
-* Android App for Books
+* Bücherwurm
+[[logo.jpg]]
+** Rails-Server
+** Android App for Books
 [[https://travis-ci.org/gizmomogwai/com.flopcode.books.android][https://travis-ci.org/gizmomogwai/com.flopcode.books.android.svg?branch=master]]
-** Prerequisites / Getting started
+*** Prerequisites / Getting started
 - you need java at least java 7
 - you need a workspace like this:
   books-workspace
@@ -29,7 +32,7 @@
     local.properties
   - run ./gradlew clean build
 
-** Basic workflow
+*** Basic workflow
 *** Add new book to library
 - press add book, scan isbn, safe
 - select write nfc tag from menu
@@ -42,7 +45,7 @@
 - he scans the nfc tag, if he is a admin he has the take book back
   button
 
-** Todos
+*** Todos
 *** ldap support for users, use ldap groups for roles?
 *** use better isbn lookup (google books)
 *** DONE list books
@@ -50,7 +53,7 @@
 *** TODO navigate back from one book to index
 *** login for users
 
-* Bugs
+*** Bugs
 ** DONE nfc not enabled                                             :mikhail:
 ** DONE timestamps in checkouts                                          :ck:
 ** DONE refresh booklist with swipe                                 :mikhail:
