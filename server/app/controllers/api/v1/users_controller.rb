@@ -8,4 +8,7 @@ class Api::V1::UsersController < Api::ApiController
     respond_with @users
   end
 
+  def show
+    respond_with @user
+  end
 end

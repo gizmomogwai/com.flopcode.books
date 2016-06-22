@@ -16,7 +16,8 @@ Rails.application.routes.draw do
   namespace :api, constraints: {format: 'json'} do
     namespace :v1 do
       resources :books
-      resources :users
+      get 'user' => 'users#show'
+      get 'users' => 'users#index'
       resources :checkouts
       resources :active_checkouts
       resources :locations

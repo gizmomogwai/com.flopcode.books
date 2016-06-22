@@ -17,4 +17,10 @@ class Api::V1::UsersControllerTest < Api::ApiControllerTest
     end
   end
 
+  test "user should get its own information including admin stuff" do
+    use_api_key(:normal)
+    get :show, format: :json
+    assert_response :success
+  end
+
 end
