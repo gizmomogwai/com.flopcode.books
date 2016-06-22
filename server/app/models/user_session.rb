@@ -7,16 +7,18 @@ class UserSession
   end
 
   def self.authenticate(params)
-    puts "xxxxxxxxx #{params}"
     account = params[:account]
     password = params[:password]
-    user = User.find_by_account(account)
-    if user.nil?
-      return nil
-    elsif password == "test" then
+    if Rails.configuration.x.authenticator.accept?(account, password)
+      user = User.find_by_account(account)
+      if user.nil?
+        user = User.new(account: account, name: account, admin: false)
+      end
+
+      user.admin = Rails.configuration.x.authenticator.admin?(account, password)
+      user.save!
       return UserSession.new(user)
-    else
-      return nil
     end
+    return nil
   end
 end
