@@ -41,6 +41,11 @@ android {
     targetSdkVersion 21
   }
 
+  dexOptions {
+    javaMaxHeapSize "4g" 
+    preDexLibraries = false
+  }
+
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_7
     targetCompatibility JavaVersion.VERSION_1_7
