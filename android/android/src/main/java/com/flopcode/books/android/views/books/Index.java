@@ -28,7 +28,6 @@ import java.util.List;
 
 import static butterknife.ButterKnife.bind;
 import static com.flopcode.books.android.BooksApplication.LOG_TAG;
-import static com.flopcode.books.android.BooksApplication.showError;
 
 public class Index extends BooksActivity {
 
@@ -49,13 +48,11 @@ public class Index extends BooksActivity {
     setContentView(R.layout.books_index);
     bind(this);
 
-    //booksList.setVisibility(GONE);
     booksList.setHasFixedSize(true);
     booksList.setLayoutManager(new LinearLayoutManager(this));
     cardAdapter = new CardAdapter();
     booksList.setAdapter(cardAdapter);
 
-    getBooksApplication().fetchData(this);
 
     refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override
@@ -73,18 +70,22 @@ public class Index extends BooksActivity {
       }
     });
 
-    if (! getBooksApplication().hasRegisteredUser(this)) {
+    if (!basicSetupComplete()) {
       startActivity(new Intent(Index.this, FirstRunDialog.class));
     }
+  }
 
+  private boolean basicSetupComplete() {
+    return getBooksApplication().hasUserAccount(this) && getBooksApplication().hasBooksServer();
   }
 
   @Override
   protected void onResume() {
     super.onResume();
     Log.d(LOG_TAG, "Books.onResume");
-
-    getBooksApplication().fetchData(this);
+    if (basicSetupComplete()) {
+      getBooksApplication().fetchData(this);
+    }
   }
 
   private void updateUi() {

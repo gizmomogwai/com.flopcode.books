@@ -16,8 +16,8 @@ import android.view.View.OnClickListener;
 import com.flopcode.books.BooksApi;
 import com.flopcode.books.BooksApi.BooksService;
 import com.flopcode.books.BooksApi.LocationsService;
-import com.flopcode.books.BooksApi.UsersService;
 import com.flopcode.books.BooksApi.ServerAliveService;
+import com.flopcode.books.BooksApi.UsersService;
 import com.flopcode.books.android.views.books.BooksActivity;
 import com.flopcode.books.models.Book;
 import com.flopcode.books.models.Location;
@@ -36,7 +36,7 @@ public class BooksApplication extends Application {
   private static final String API_KEY = "apiKey";
   private static final String BOOKS_SERVER = "booksServer";
   private static final String USER_ID = "userId";
-  private static final String USER_NAME = "userName";
+  private static final String USER_ACCOUNT = "userAccount";
   private ServerAliveService serverAliveService;
   private BooksService booksService;
   private UsersService usersService;
@@ -62,12 +62,12 @@ public class BooksApplication extends Application {
     super.onTerminate();
   }
 
-  public SharedPreferences getSharedPreferences(Context c) {
+  public static SharedPreferences getSharedPreferences(Context c) {
     return c.getSharedPreferences("books", MODE_PRIVATE);
   }
 
   private String getPreference(Context c, String s) {
-    return getSharedPreferences(c).getString(s, null);
+    return getPreference(c, s, null);
   }
 
   private long getLongPreference(Context c, String s) {
@@ -75,11 +75,11 @@ public class BooksApplication extends Application {
   }
 
   private String getPreference(Context c, String s, String defaultValue) {
-    return PreferenceManager.getDefaultSharedPreferences(c).getString(s, defaultValue);
+    return getSharedPreferences(c).getString(s, defaultValue);
   }
 
   public String getBooksServer(Context c) {
-    return getPreference(c, BOOKS_SERVER, "http://192.168.1.100:3000");
+    return getPreference(c, BOOKS_SERVER);
   }
 
   public static void showError(Activity c, String s) {
@@ -121,22 +121,27 @@ public class BooksApplication extends Application {
     return locations;
   }
 
-  public Boolean hasRegisteredUser(Context c) {
-    return (getUserName(c) != null);
+  public static void storeUserAccount(Context c, String account) {
+    storeStringPref(c, USER_ACCOUNT, account);
   }
 
-  public String getUserName(Context c) {
-    final String res = getPreference(c, USER_NAME);
+
+  public boolean hasUserAccount(Context c) {
+    return getUserAccount(c) != null;
+  }
+
+  public String getUserAccount(Context c) {
+    final String res = getPreference(c, USER_ACCOUNT);
     Log.i(LOG_TAG, "Username is " + res);
     return res;
   }
 
   public void storeApiKey(String apiKey) {
-    getSharedPreferences(this).edit().putString(API_KEY, apiKey).commit();
+    storeStringPref(this, API_KEY, apiKey);
   }
 
   public Boolean hasApiKey(Context c) {
-    return (getApiKey(c) != null);
+    return getApiKey(c) != null;
   }
 
   public String getApiKey(Context c) {
@@ -146,7 +151,20 @@ public class BooksApplication extends Application {
   }
 
   private void storeUserId(long userId) {
-    getSharedPreferences(this).edit().putLong(USER_ID, userId).commit();
+    Log.i(LOG_TAG, "storeUserId" + userId);
+    storeLongPref(this, USER_ID, userId);
+  }
+
+  private static void storeLongPref(Context c, String id, long v) {
+    getSharedPreferences(c).edit().putLong(id, v).commit();
+  }
+
+  private static void storeStringPref(Context c, String id, String v) {
+    getSharedPreferences(c).edit().putString(id, v).commit();
+  }
+
+  public static void storeBooksServer(Context c, String v) {
+    storeStringPref(c, BOOKS_SERVER, v);
   }
 
   public long getUserId(Context c) {
@@ -352,5 +370,7 @@ public class BooksApplication extends Application {
     storeUserId(userId);
   }
 
-
+  public boolean hasBooksServer() {
+    return getBooksServer(this) != null;
+  }
 }

@@ -20,7 +20,15 @@ import retrofit2.Converter;
 import retrofit2.Converter.Factory;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.*;
+import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.HEAD;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -58,6 +66,7 @@ public class BooksApi {
 
   public interface ServerAliveService {
     @HEAD(BOOKS_API)
+    @Headers("Accept: application/json")
     Call<Void> alive();
   }
 
@@ -174,20 +183,24 @@ public class BooksApi {
       @Override
       public Book convert(ResponseBody responseBody) throws IOException {
         Map m = new Gson().fromJson(new StringReader(responseBody.string()), Map.class);
-        Map firstItem = (Map) ((List) m.get("items")).iterator().next();
-        Map volumeInfo = (Map) firstItem.get("volumeInfo");
-        String title = (String) volumeInfo.get("title");
-        String authors = Joiner.on(", ").join((List) volumeInfo.get("authors"));
-        Map isbnMap = (Map) Iterables.find((List) volumeInfo.get("industryIdentifiers"),
-          new Predicate() {
-            @Override
-            public boolean apply(Object o) {
-              Map m = (Map) o;
-              return m.get("type").equals("ISBN_13");
-            }
-          });
-        String isbn = (String) isbnMap.get("identifier");
-        return new Book(isbn, title, authors);
+        final List items = (List) m.get("items");
+        if (!items.isEmpty()) {
+          Map firstItem = (Map) items.iterator().next();
+          Map volumeInfo = (Map) firstItem.get("volumeInfo");
+          String title = (String) volumeInfo.get("title");
+          String authors = Joiner.on(", ").join((List) volumeInfo.get("authors"));
+          Map isbnMap = (Map) Iterables.find((List) volumeInfo.get("industryIdentifiers"),
+            new Predicate() {
+              @Override
+              public boolean apply(Object o) {
+                Map m = (Map) o;
+                return m.get("type").equals("ISBN_13");
+              }
+            });
+          String isbn = (String) isbnMap.get("identifier");
+          return new Book(isbn, title, authors);
+        }
+        return null;
       }
     };
   }

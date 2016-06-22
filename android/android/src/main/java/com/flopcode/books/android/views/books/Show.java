@@ -21,7 +21,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.flopcode.books.BooksApi;
 import com.flopcode.books.BooksApi.ActiveCheckoutsService;
@@ -30,16 +29,12 @@ import com.flopcode.books.models.ActiveCheckout;
 import com.flopcode.books.models.Book;
 import com.flopcode.books.models.Location;
 import com.flopcode.books.models.User;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
+import static butterknife.ButterKnife.bind;
 import static com.flopcode.books.android.BooksApplication.LOG_TAG;
 import static com.flopcode.books.android.BooksApplication.showError;
 
@@ -86,7 +81,7 @@ public class Show extends BooksActivity {
     Log.d(LOG_TAG, "ShowBook.onCreate");
     checkoutsService = BooksApi.createActiveCheckoutsService(getBooksApplication().getBooksServer(this), getBooksApplication().getApiKey(this));
     setContentView(R.layout.books_show);
-    ButterKnife.bind(this);
+    bind(this);
 
     final Intent intent = getIntent();
 
@@ -223,18 +218,14 @@ public class Show extends BooksActivity {
     title.setText(title.getHint().toString() + " " + book.title);
     authors.setText(authors.getHint().toString() + " " + book.authors);
 
-    for (User u : getBooksApplication().getUsers())
-    {
-      if (u.id == book.userId)
-      {
+    for (User u : getBooksApplication().getUsers()) {
+      if (u.id == book.userId) {
         owner.setText(owner.getHint().toString() + " " + u.name);
       }
     }
 
-    for (Location l : getBooksApplication().getLocations())
-    {
-      if (l.id == book.locationId)
-      {
+    for (Location l : getBooksApplication().getLocations()) {
+      if (l.id == book.locationId) {
         location.setText(location.getHint().toString() + " " + l.name);
       }
     }
