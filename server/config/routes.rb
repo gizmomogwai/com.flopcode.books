@@ -2,7 +2,9 @@ Rails.application.routes.draw do
 
   resources :books
   resources :users do
-    resources :api_keys
+    resources :api_keys do
+      get 'activate'
+    end
   end
   resources :checkouts
   resources :active_checkouts

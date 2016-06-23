@@ -91,3 +91,9 @@ right now its 2mb
 - server sends this api key back as response (but only once)
 - server sends activation link by email
 - as soon as the user clicks activates
+
+
+* lessons learned
+- simple application with bad network crashes ... you see where stuff can go wrong
+- travis is great, not so much for git submodules
+- its always good to 

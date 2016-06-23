@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Welcome to buecherwurm, <%= @user.name %></h1>
+    <p>
+      You have created an api key.
+      Please activate it by clicking this link:
+      <%= @api_key_activation_url %>.
+    </p>
+  </body>
+</html>
