@@ -236,16 +236,6 @@ public class BooksApplication extends Application {
     updatedLayout.setRefreshing(false);
   }
 
-  public Boolean serverExists() {
-    try {
-      HttpURLConnection connection = (HttpURLConnection) new URL(getBooksServer(this)).openConnection();
-      connection.setRequestMethod("HEAD");
-      return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);
-    } catch (Exception e) {
-      return false;
-    }
-  }
-
   private void createServices(BooksActivity a) {
     final String apiKey = a.getBooksApplication().getApiKey(this);
 
