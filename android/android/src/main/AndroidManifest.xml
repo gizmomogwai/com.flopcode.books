@@ -10,7 +10,8 @@
 
   <application
     android:name="com.flopcode.books.android.BooksApplication"
-    android:theme="@style/Theme.AppCompat.DayNight">
+    android:theme="@style/Theme.AppCompat.DayNight"
+    android:icon="@drawable/esr_logo">
     <activity
       android:name=".views.books.Index"
       android:label="@string/title_activity_books">
