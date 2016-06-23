@@ -1,5 +1,7 @@
 package com.flopcode.books.android;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +21,7 @@ import com.flopcode.books.BooksApi.BooksService;
 import com.flopcode.books.BooksApi.LocationsService;
 import com.flopcode.books.BooksApi.ServerAliveService;
 import com.flopcode.books.BooksApi.UsersService;
+import com.flopcode.books.android.views.FirstRunDialog;
 import com.flopcode.books.android.views.books.BooksActivity;
 import com.flopcode.books.models.Book;
 import com.flopcode.books.models.Location;
@@ -80,6 +84,11 @@ public class BooksApplication extends Application {
 
   public String getBooksServer(Context c) {
     return getPreference(c, BOOKS_SERVER);
+  }
+
+  public static void showStartScreenError(Activity c, String s) {
+    final Snackbar snackbar = Snackbar.make(c.findViewById(R.id.linearLayout), s, Snackbar.LENGTH_LONG);
+    snackbar.show();
   }
 
   public static void showError(Activity c, String s) {
@@ -197,6 +206,16 @@ public class BooksApplication extends Application {
     locationsService = null;
   }
 
+  public String getEsrGoogleAccount() {
+    AccountManager manager = (AccountManager) getSystemService(ACCOUNT_SERVICE);
+    Account[] list = manager.getAccounts();
+    for (Account acc:list) {
+      if (acc.name.contains("esrlabs"))
+        return acc.name;
+    }
+    return "";
+  }
+
   public void fetchData(final BooksActivity a) {
     if (!a.getBooksApplication().hasApiKey(a)) {
       showError(a, "You don't have API key", "Add", new OnClickListener() {
@@ -243,6 +262,23 @@ public class BooksApplication extends Application {
     if (locationsService == null) {
       locationsService = BooksApi.createLocationsService(a.getBooksApplication().getBooksServer(this), apiKey);
     }
+  }
+
+  public void checkServerOnFirstStart(final FirstRunDialog a) {
+    ServerAliveService aliveService = BooksApi.createServerAliveService(a.getBooksApplication().getBooksServer(this), "");
+    serverAliveService.alive().enqueue(new Callback<Void>() {
+
+      @Override
+      public void onResponse(Call<Void> call, Response<Void> response) {
+        a.serverIsAlive();
+      }
+
+      @Override
+      public void onFailure(Call<Void> call, Throwable t) {
+        showStartScreenError(a, "Server is not available");
+        a.serverNotAlive();
+      }
+    });
   }
 
   public void checkServerAlive(final BooksActivity a) {

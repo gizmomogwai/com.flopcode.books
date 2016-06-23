@@ -7,6 +7,10 @@
     android:name="android.permission.INTERNET"/>
   <uses-permission
     android:name="android.permission.NFC"/>
+  <uses-permission
+    android:name="android.permission.GET_ACCOUNTS"></uses-permission>
+  <uses-permission
+    android:name="android.permission.AUTHENTICATE_ACCOUNTS"></uses-permission>
 
   <application
     android:name="com.flopcode.books.android.BooksApplication"
