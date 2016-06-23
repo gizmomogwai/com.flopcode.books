@@ -72,7 +72,7 @@ For details please see [[https://github.com/gizmomogwai/com.flopcode.books/blob/
 *** TODO owner for added books is wrong
 *** TODO better search
 *** TODO add books without location -> npe
-*** TODO password field im webui
+*** DONE password field im webui                                         :ck:
 
 ** New UserManagement Workflow
 - phone sends CreateApiKeyRequest with email + device id/name

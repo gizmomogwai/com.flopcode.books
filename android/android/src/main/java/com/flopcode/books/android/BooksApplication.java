@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -45,7 +46,7 @@ public class BooksApplication extends Application {
   private LocationsService locationsService;
 
   public static SharedPreferences getSharedPreferences(Context c) {
-    return c.getSharedPreferences("books", MODE_PRIVATE);
+    return PreferenceManager.getDefaultSharedPreferences(c);
   }
 
   public static void showError(Activity c, String s) {
@@ -72,6 +73,7 @@ public class BooksApplication extends Application {
   }
 
   public static void storeBooksServer(Context c, String v) {
+    Log.e(LOG_TAG, "storeBooksServer " + v);
     storeStringPref(c, BOOKS_SERVER, v);
   }
 
@@ -108,7 +110,9 @@ public class BooksApplication extends Application {
   }
 
   public String getBooksServer(Context c) {
-    return getPreference(c, BOOKS_SERVER);
+    final String res = getPreference(c, BOOKS_SERVER);
+    Log.e(LOG_TAG, "getBooksServer: " + res);
+    return res;
   }
 
   public List<Book> getBooks() {
@@ -254,6 +258,7 @@ public class BooksApplication extends Application {
 
       @Override
       public void onFailure(Call<Void> call, Throwable t) {
+        Log.e(LOG_TAG, "server alive check failed", t);
         showError(a, "Server is not available", "Settings", new OnClickListener() {
           @Override
           public void onClick(View v) {

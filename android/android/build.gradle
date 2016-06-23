@@ -34,7 +34,7 @@ def passwordFromKeychain = { name ->
 
 android {
   compileSdkVersion 23
-  buildToolsVersion "24"
+  buildToolsVersion "24.0.0"
 
   defaultConfig {
     minSdkVersion 21
@@ -42,7 +42,7 @@ android {
   }
 
   dexOptions {
-    javaMaxHeapSize "4g" 
+    javaMaxHeapSize "4g"
     preDexLibraries = false
   }
 

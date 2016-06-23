@@ -40,5 +40,6 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # development settings for development
-  config.x.authenticator = LdapAuthenticator.new
+#  config.x.authenticator = LdapAuthenticator.new
+  config.x.authenticator = TestAndAdminAuthenticator.new
 end
