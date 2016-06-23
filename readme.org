@@ -72,3 +72,11 @@ For details please see [[https://github.com/gizmomogwai/com.flopcode.books/blob/
 *** TODO owner for added books is wrong
 *** TODO better search
 *** TODO add books without location -> npe
+*** TODO password field im webui
+
+** New UserManagement Workflow
+- phone sends CreateApiKeyRequest with email + device id/name
+- server creates api key with email / deviceid as description in inactive state
+- server sends this api key back as response (but only once)
+- server sends activation link by email
+- as soon as the user clicks activates
