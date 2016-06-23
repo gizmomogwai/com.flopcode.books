@@ -70,7 +70,13 @@ right now its 2mb
 - pragmatic programmer: 9780201616224
 - the rails way: 9780321445612
 - xkcd: 9780615314464
+- search engine optimization for dummies: 9780764567582
 **** alternative http://isbndb.com/
+- http://isbndb.com/api/books.xml?access_key=LYBVW18H&index1=isbn&value1=9780201616224
+- http://isbndb.com/api/books.xml?access_key=LYBVW18H&index1=isbn&value1=9780321445612
+- http://isbndb.com/api/books.xml?access_key=LYBVW18H&index1=isbn&value1=9780615314464
+- http://isbndb.com/api/books.xml?access_key=LYBVW18H&index1=isbn&value1=9780764567582
+
 *** DONE IN-PROGRESS setup dialog                                   :mikhail:
 *** DONE fix app rotation bugs                                          :wolf:
 *** IN-PROGRESS hide add button for normal users                     :ck:wolf:
