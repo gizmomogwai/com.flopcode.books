@@ -47,14 +47,16 @@ public class Book implements Serializable {
       return "checked out by me";
     }
 
-    User res = Iterables.find(users, new Predicate<User>() {
-      @Override
-      public boolean apply(User input) {
-        return input.id == activeCheckout;
+    if (users != null) {
+      User res = Iterables.find(users, new Predicate<User>() {
+        @Override
+        public boolean apply(User input) {
+          return input.id == activeCheckout;
+        }
+      });
+      if (res != null) {
+        return "checked out by " + res.name;
       }
-    });
-    if (res != null) {
-      return "checked out by " + res.name;
     }
 
     return "checked out by unknown";
