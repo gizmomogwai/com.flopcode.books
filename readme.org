@@ -62,11 +62,16 @@ For details please see [[https://github.com/gizmomogwai/com.flopcode.books/blob/
 *** DONE show unauthorized dialog                                    :mikhail:
 *** DONE landing page nach login                                          :ck:
 *** TODO make android app smaller
+right now its 2mb
 *** TODO unittests for frontend
-*** TODO travis build for frontend
+*** DONE travis build for frontend                                       :ck:
 *** CANCELED first user should automatically be admin user                :ck:
-*** IN-PROGRESS isbn search                                             :wolf:
-*** IN-PROGRESS setup dialog                                         :mikhail:
+*** DONE IN-PROGRESS isbn search                                       :wolf:
+- pragmatic programmer: 9780201616224
+- the rails way: 9780321445612
+- xkcd: 9780615314464
+**** alternative http://isbndb.com/
+*** DONE IN-PROGRESS setup dialog                                   :mikhail:
 *** DONE fix app rotation bugs                                          :wolf:
 *** IN-PROGRESS hide add button for normal users                     :ck:wolf:
 *** TODO owner for added books is wrong
