@@ -61,19 +61,16 @@ public interface IsbnLookup {
       };
     }
 
-    @Root(strict = false)
     static class ISBNdb {
       @Element(name = "BookList")
       BookList bookList;
     }
 
-    @Root(strict = false)
     static class BookList {
       @Element(name = "BookData")
       BookData bookData;
     }
 
-    @Root(strict = false)
     static class BookData {
       @Attribute
       String isbn13;
@@ -90,7 +87,7 @@ public interface IsbnLookup {
         public Book convert(ResponseBody value) throws IOException {
           Serializer s = new Persister();
           try {
-            ISBNdb isbnDb = s.read(ISBNdb.class, value.string());
+            ISBNdb isbnDb = s.read(ISBNdb.class, value.string(), false);
             final BookData bookData = isbnDb.bookList.bookData;
             System.out.println("isbnDbBook = " + bookData.title);
             System.out.println("isbnDbBook = " + bookData.authors);
