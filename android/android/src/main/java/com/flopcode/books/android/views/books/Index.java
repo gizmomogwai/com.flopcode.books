@@ -105,7 +105,9 @@ public class Index extends BooksActivity {
   }
 
   private boolean fetchDataComplete() {
-    return getBooksApplication().getBooks() != null;
+    return getBooksApplication().getBooks() != null
+      && getBooksApplication().getLocations() != null
+      && getBooksApplication().getUsers() != null;
   }
 
   @Override

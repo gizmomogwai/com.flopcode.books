@@ -61,22 +61,21 @@ For details please see [[https://github.com/gizmomogwai/com.flopcode.books/blob/
 *** DONE add book button on main screen                              :mikhail:
 *** DONE show unauthorized dialog                                    :mikhail:
 *** DONE landing page nach login                                          :ck:
-*** TODO make android app smaller
+*** DONE make android app smaller
 right now its 2mb
 *** TODO unittests for frontend
 *** DONE travis build for frontend                                       :ck:
 *** CANCELED first user should automatically be admin user                :ck:
-*** DONE IN-PROGRESS isbn search                                       :wolf:
+*** DONE isbn search                                       :wolf:
 - pragmatic programmer: 9780201616224
 - the rails way: 9780321445612
 - xkcd: 9780615314464
 - search engine optimization for dummies: 9780764567582
-**** alternative http://isbndb.com/
+*** DONE alternative http://isbndb.com/                                  :ck:
 - http://isbndb.com/api/books.xml?access_key=LYBVW18H&index1=isbn&value1=9780201616224
 - http://isbndb.com/api/books.xml?access_key=LYBVW18H&index1=isbn&value1=9780321445612
 - http://isbndb.com/api/books.xml?access_key=LYBVW18H&index1=isbn&value1=9780615314464
 - http://isbndb.com/api/books.xml?access_key=LYBVW18H&index1=isbn&value1=9780764567582
-
 *** DONE IN-PROGRESS setup dialog                                   :mikhail:
 *** DONE fix app rotation bugs                                          :wolf:
 *** IN-PROGRESS hide add button for normal users                     :ck:wolf:
@@ -86,14 +85,13 @@ right now its 2mb
 *** DONE password field im webui                                         :ck:
 
 ** New UserManagement Workflow
+On the labdays we discussed the following solution:
 - phone sends CreateApiKeyRequest with email + device id/name
 - server creates api key with email / deviceid as description in inactive state
 - server sends this api key back as response (but only once)
 - server sends activation link by email
 - as soon as the user clicks activates
-
-
-* lessons learned
-- simple application with bad network crashes ... you see where stuff can go wrong
-- travis is great, not so much for git submodules
-- its always good to 
+The problem with this is, that it does not solve the login in the
+browser. For now we stay with the ldap + api key method, if someone
+wants to implement oauth2 against google, I think this could be a
+solution suitable to the browser as well as to the handy.

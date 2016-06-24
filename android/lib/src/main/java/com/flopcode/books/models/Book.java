@@ -39,6 +39,9 @@ public class Book implements Serializable {
   }
 
   public String status(List<User> users, final long me) {
+    if (users == null) {
+      return "ERROR no users available";
+    }
     if (activeCheckout == 0) {
       return "available";
     }
@@ -47,18 +50,12 @@ public class Book implements Serializable {
       return "checked out by me";
     }
 
-    if (users != null) {
-      User res = Iterables.find(users, new Predicate<User>() {
-        @Override
-        public boolean apply(User input) {
-          return input.id == activeCheckout;
-        }
-      });
-      if (res != null) {
-        return "checked out by " + res.name;
+    User res = Iterables.find(users, new Predicate<User>() {
+      @Override
+      public boolean apply(User input) {
+        return input.id == activeCheckout;
       }
-    }
-
-    return "checked out by unknown";
+    });
+    return "checked out by " + res.name;
   }
 }

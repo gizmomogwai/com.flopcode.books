@@ -4,20 +4,13 @@ import com.flopcode.books.models.ActiveCheckout;
 import com.flopcode.books.models.Book;
 import com.flopcode.books.models.Location;
 import com.flopcode.books.models.User;
-import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.gson.Gson;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import retrofit2.Call;
-import retrofit2.Converter;
-import retrofit2.Converter.Factory;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.DELETE;
@@ -28,14 +21,9 @@ import retrofit2.http.HEAD;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class BooksApi {
@@ -91,7 +79,7 @@ public class BooksApi {
     return rf.create(ActiveCheckoutsService.class);
   }
 
-  private static Retrofit.Builder retrofitWithLogging(String apiKey) {
+  public static Retrofit.Builder retrofitWithLogging(String apiKey) {
     HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
     logging.setLevel(Level.BODY);
     OkHttpClient httpClient = new OkHttpClient.Builder()
@@ -102,51 +90,6 @@ public class BooksApi {
       .writeTimeout(2, TimeUnit.SECONDS)
       .build();
     return new Retrofit.Builder().client(httpClient);
-  }
-
-  public static IsbnLookupService createIsbnLookupService() {
-    Retrofit rf = retrofitWithLogging(null)
-      .baseUrl("https://www.googleapis.com")
-      .addConverterFactory(googleJsonFactory())
-      .build();
-
-    return rf.create(IsbnLookupService.class);
-  }
-
-  private static Factory googleJsonFactory() {
-    return new Factory() {
-      @Override
-      public Converter<ResponseBody, Book> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
-        return googleJsonConverter();
-      }
-    };
-  }
-
-  private static Converter<ResponseBody, Book> googleJsonConverter() {
-    return new Converter<ResponseBody, Book>() {
-      @Override
-      public Book convert(ResponseBody responseBody) throws IOException {
-        Map m = new Gson().fromJson(new StringReader(responseBody.string()), Map.class);
-        final List items = (List) m.get("items");
-        if (!items.isEmpty()) {
-          Map firstItem = (Map) items.iterator().next();
-          Map volumeInfo = (Map) firstItem.get("volumeInfo");
-          String title = (String) volumeInfo.get("title");
-          String authors = Joiner.on(", ").join((List) volumeInfo.get("authors"));
-          Map isbnMap = (Map) Iterables.find((List) volumeInfo.get("industryIdentifiers"),
-            new Predicate() {
-              @Override
-              public boolean apply(Object o) {
-                Map m = (Map) o;
-                return m.get("type").equals("ISBN_13");
-              }
-            });
-          String isbn = (String) isbnMap.get("identifier");
-          return new Book(isbn, title, authors);
-        }
-        return null;
-      }
-    };
   }
 
   public interface UsersService {
@@ -199,10 +142,6 @@ public class BooksApi {
     Call<Void> destroy(@Path("id") String activeCheckoutId);
   }
 
-  public interface IsbnLookupService {
-    @GET("books/v1/volumes")
-    Call<Book> find(@Query("q") String isbn);
-  }
 
   private static class AddAuthorizationHeaderInterceptor implements Interceptor {
     private final String apiKey;
