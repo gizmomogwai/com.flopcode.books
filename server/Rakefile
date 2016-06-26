@@ -9,7 +9,7 @@ desc 'run test server with fresh db'
 task :run_testserver do
   sh "rm -rf tmp"
   sh "RAILS_ENV=test rake db:drop db:schema:load db:seed"
-  sh "RAILS_ENV=test rails s"
+  sh "RAILS_ENV=test rails s -b 127.0.0.1"
 end
 
 desc 'deploy to buecherwurm'

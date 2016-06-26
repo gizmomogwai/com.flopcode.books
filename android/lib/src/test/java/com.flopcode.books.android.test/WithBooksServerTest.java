@@ -23,7 +23,7 @@ public abstract class WithBooksServerTest {
   @Before
   public void setUp() throws Exception {
     System.out.println("WithBooksServerTest.setUp");
-    railsServer = AutonomeProcess.run(new File("../../server"), true, null, "WEBrick::HTTPServer#start", System.getProperty("user.home") + "/.rvm/gems/ruby-2.3.1@books/wrappers/bundle", "exec", "rake", "run_testserver");
+    railsServer = AutonomeProcess.run(new File("../../server"), false, "Use Ctrl-C to stop", null, System.getProperty("user.home") + "/.rvm/gems/ruby-2.3.1@books/wrappers/bundle", "exec", "rake", "run_testserver");
     waitForRailsServer();
   }
 
@@ -135,13 +135,15 @@ public abstract class WithBooksServerTest {
 
         throw new RuntimeException("working directory does not exist " + new File(".").getAbsolutePath());
       }
-      System.out.println("workingDirectory = " + workingDirectory.getAbsoluteFile());
-      for (File f : workingDirectory.getAbsoluteFile().listFiles()) {
-        System.out.println("f = " + f);
-      }
-      System.out.println("AutonomeProcess.run");
-      for (String s : command) {
-        System.out.println("s = " + s);
+      if (debug) {
+        System.out.println("workingDirectory = " + workingDirectory.getAbsoluteFile());
+        for (File f : workingDirectory.getAbsoluteFile().listFiles()) {
+          System.out.println("f = " + f);
+        }
+        System.out.println("AutonomeProcess.run");
+        for (String s : command) {
+          System.out.println("s = " + s);
+        }
       }
       return new AutonomeProcess(new ProcessBuilder(command).directory(workingDirectory.getAbsoluteFile()).start(), debug, stdout, stderr);
     }
@@ -221,7 +223,7 @@ public abstract class WithBooksServerTest {
     public void destroy() {
       try {
         if (process.isAlive()) {
-          AutonomeProcess.run(new File("."), false, null, null, "kill", "-INT", "" + getPid("bin/rails s")).waitFor();
+          AutonomeProcess.run(new File("."), false, null, null, "kill", "-INT", "" + getPid("puma")).waitFor();
         }
         process.waitFor();
         System.out.println("AutonomeProcess.destroy - finished");
