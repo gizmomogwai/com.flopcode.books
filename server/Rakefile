@@ -11,3 +11,8 @@ task :run_testserver do
   sh "RAILS_ENV=test rake db:drop db:schema:load db:seed"
   sh "RAILS_ENV=test rails s"
 end
+
+desc 'deploy to buecherwurm'
+task :deploy do
+  sh "bundle exec cap production deploy"
+end

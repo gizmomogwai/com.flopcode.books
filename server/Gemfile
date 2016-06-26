@@ -30,6 +30,7 @@ gem 'picky'
 gem 'text'
 gem 'procrastinate'
 gem 'net-ldap'
+gem 'puma'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -38,7 +39,9 @@ gem 'net-ldap'
 # gem 'unicorn'
 
 # Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+gem 'capistrano-rails', group: :development
+gem 'capistrano-rvm', group: :development, github: "capistrano/rvm"
+gem 'capistrano3-puma' , group: :development
 
 gem 'codecov', :require => false, :group => :test
 
