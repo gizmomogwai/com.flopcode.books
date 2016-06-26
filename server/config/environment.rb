@@ -2,7 +2,12 @@
 
 require File.expand_path('../application', __FILE__)
 
-APP_VERSION = '0.0.1'#`git describe --always`.strip unless defined? APP_VERSION
+REVISION_FILE = File.join(Rails.root, 'REVISION')
+if File.exist?(REVISION_FILE)
+  APP_VERSION = File.read(REVISION_FILE)
+else
+  APP_VERSION = `git describe --always`.strip unless defined? APP_VERSION
+end
 
 # Initialize the Rails application.
 Rails.application.initialize!
