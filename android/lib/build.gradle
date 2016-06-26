@@ -3,7 +3,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:1.5.0'
+    classpath 'com.android.tools.build:gradle:2.1.2'
   }
 }
 
@@ -37,3 +37,15 @@ test {
   testLogging.showStandardStreams = true
   testLogging.exceptionFormat = 'full'
 }
+
+apply plugin: 'jacoco'
+
+jacocoTestReport {
+  reports {
+    html.enabled = true
+    xml.enabled = true
+    csv.enabled false
+  }
+}
+
+check.dependsOn jacocoTestReport

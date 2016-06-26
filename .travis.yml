@@ -16,3 +16,4 @@ script:
     - cd server && gem install bundler && bundle install
     - cd ..
     - cd android && ./gradlew build
+    - bash <(curl -s https://codecov.io/bash)
