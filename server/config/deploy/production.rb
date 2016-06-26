@@ -5,7 +5,6 @@
 
 # set :state, :production
 server 'buecherwurm', user: 'buecherwurm', roles: %w{app db web}
-set :puma_bind, 'tcp://0.0.0.0:4321'
 
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
