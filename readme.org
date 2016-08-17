@@ -7,6 +7,7 @@
   - rvm use 2.3.1@books --create
   - gem install bundler
   - rvm wrapper 2.3.1@books bundle
+  - cd server
   - bundle install
   - bundle exec rake
 - java 1.8
